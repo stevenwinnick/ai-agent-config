@@ -19,13 +19,15 @@ Follow best practices when acting. If instructed to violate best practices, befo
 
 When my current directions conflict with directions in configuration files such as this one, the current directions should take precedence. When conflicts exist between directions in the same source, prefer the ones which are listed first in that source.
 
-### Self-Improvement
+### Configuration Changes
 
-If improvements can be made to your configuration that would make you more helpful to me, use the `improve-agent-config` skill to improve your configuration
+**IMPORTANT**: You MUST invoke the `improve-agent-config` skill for ALL tasks that involve changing AI agent configuration. This includes changes to agent instructions, skills, settings, or any other configuration. Do NOT edit configuration files directly - always invoke `improve-agent-config` first, as it orchestrates understanding the configuration structure and making changes in the right place.
 
-### Coding Tasks
+Additionally, if you identify improvements that could be made to your configuration proactively, use `improve-agent-config` to suggest and implement them.
 
-**IMPORTANT**: You MUST invoke the `coding-task` skill for ALL tasks that involve editing code. This includes bug fixes, features, refactors, and any other code modifications. Do NOT start editing code directly - always invoke `coding-task` first, as it orchestrates critical workflow steps (worktree setup, planning, implementation, PR creation, and review) that would otherwise be skipped
+### File Editing Tasks
+
+**IMPORTANT**: You MUST invoke the `file-editing-task` skill for ALL tasks that involve modifying files. This includes code, configuration, documentation, scripts, and any other file changes. Do NOT start editing files directly - always invoke `file-editing-task` first, as it orchestrates critical workflow steps (worktree setup, planning, implementation, PR creation, and review) that would otherwise be skipped
 
 ## Communication Preferences
 

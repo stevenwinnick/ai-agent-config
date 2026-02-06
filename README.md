@@ -61,7 +61,7 @@ Or update configs and test in one step:
 ./scripts/update-and-test-configs.sh
 ```
 
-These scripts run each agent (Claude Code, Codex CLI, Cursor CLI) in headless mode with probe questions to confirm that AGENTS.md is loaded and the `coding-task` skill is accessible.
+These scripts run each agent (Claude Code, Codex CLI, Cursor CLI) in headless mode with probe questions to confirm that AGENTS.md is loaded and the `explore-and-discover` skill is accessible.
 
 #### Manual Testing
 
@@ -70,9 +70,9 @@ These scripts run each agent (Claude Code, Codex CLI, Cursor CLI) in headless mo
 Manually validate configurations used by the Cursor UI (matches validation script checks):
 
 1. Open Cursor Settings (Cmd+Shift+J) and navigate to **Rules**
-2. Verify skills appear in the **Agent Decides** section (e.g., `coding-task`)
-3. In Agent chat, type `/coding-task` to confirm the skill is available
-4. Ask Cursor: "What skill should I use for coding tasks?" - response should reference 'coding-task'
+2. Verify skills appear in the **Agent Decides** section (e.g., `explore-and-discover`)
+3. In Agent chat, type `/explore-and-discover` to confirm the skill is available
+4. Ask Cursor: "What skill should I use for file editing tasks?" - response should reference 'explore-and-discover'
 
 Don't forget that setting a global `AGENTS.md` requires a manual operation for Cursor. You'll have to
 
