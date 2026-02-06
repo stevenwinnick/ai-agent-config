@@ -13,7 +13,7 @@ Worktrees follow this structure, allowing multiple branches to be checked out si
 ```
 $CODE_ROOT/
   <repo-name>/
-    trunk/
+    <default-branch-name>/
       <repo-name>/           # Main working copy (on default branch)
     worktrees/
       stevenwinnick--CLOUDR-123-feature-name/
@@ -21,6 +21,8 @@ $CODE_ROOT/
       stevenwinnick--NOJIRA-260204-fix-bug/
         <repo-name>/         # Another worktree
 ```
+
+The `<default-branch-name>/` directory is named after the repo's default branch (e.g., `main`, `master`, `trunk`, etc.). Always detect the default branch dynamically rather than assuming its name.
 
 Branch names have slashes replaced with `--` in the directory name.
 

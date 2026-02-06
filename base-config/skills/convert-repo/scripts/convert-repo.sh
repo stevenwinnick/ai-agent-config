@@ -34,7 +34,14 @@ fi
 
 REPO_NAME=$(basename "$REPO_SOURCE")
 TARGET_BASE="$CODE_ROOT/$REPO_NAME"
-TARGET_PATH="$TARGET_BASE/trunk/$REPO_NAME"
+
+# Detect default branch from the source repo
+DEFAULT_BRANCH=$(git -C "$REPO_SOURCE" symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@')
+if [[ -z "$DEFAULT_BRANCH" ]]; then
+    DEFAULT_BRANCH=$(git -C "$REPO_SOURCE" rev-parse --abbrev-ref HEAD)
+fi
+
+TARGET_PATH="$TARGET_BASE/$DEFAULT_BRANCH/$REPO_NAME"
 
 # Check the target doesn't already exist (unless the source IS already at the target)
 if [[ -d "$TARGET_PATH" && "$REPO_SOURCE" != "$TARGET_PATH" ]]; then
@@ -61,18 +68,15 @@ if [[ -d "$TARGET_BASE" ]]; then
 fi
 
 # Create target structure and move the repo
-mkdir -p "$TARGET_BASE/trunk"
+mkdir -p "$TARGET_BASE/$DEFAULT_BRANCH"
 mkdir -p "$TARGET_BASE/worktrees"
 mv "$REPO_SOURCE" "$TARGET_PATH"
 
 # Checkout default branch if not already on it
-DEFAULT_BRANCH=$(git -C "$TARGET_PATH" symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@')
-if [[ -n "$DEFAULT_BRANCH" ]]; then
-    CURRENT_BRANCH=$(git -C "$TARGET_PATH" rev-parse --abbrev-ref HEAD)
-    if [[ "$CURRENT_BRANCH" != "$DEFAULT_BRANCH" ]]; then
-        echo "Switching from '$CURRENT_BRANCH' to default branch '$DEFAULT_BRANCH'"
-        git -C "$TARGET_PATH" checkout "$DEFAULT_BRANCH"
-    fi
+CURRENT_BRANCH=$(git -C "$TARGET_PATH" rev-parse --abbrev-ref HEAD)
+if [[ "$CURRENT_BRANCH" != "$DEFAULT_BRANCH" ]]; then
+    echo "Switching from '$CURRENT_BRANCH' to default branch '$DEFAULT_BRANCH'"
+    git -C "$TARGET_PATH" checkout "$DEFAULT_BRANCH"
 fi
 
 echo ""
