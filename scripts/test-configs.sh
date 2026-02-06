@@ -1,149 +1,105 @@
 #!/bin/bash
-# Test that AI coding agent configurations are properly loaded
-# Deterministic validation of Claude Code, Cursor CLI, and Codex CLI configs
-# Run after configure-all.sh to validate configs are working
+# Functional test for AI coding agent configurations
+# Runs each agent in headless mode to validate that it can see AGENTS.md and the coding-task skill
 
 set -e
 
-CONFIG_DIR="$HOME/.ai-agent-config"
-BASE_CONFIG_DIR="$CONFIG_DIR/base-config"
-CODEX_HOME="${CODEX_HOME:-$HOME/.codex}"
+TIMEOUT=60
 
-check_symlink() {
-  local link_path="$1"
-  local expected_target="$2"
+# Scratch directory for test outputs
+SCRATCH_DIR=$(mktemp -d)
+trap 'rm -rf "$SCRATCH_DIR"' EXIT
 
-  if [ ! -L "$link_path" ]; then
-    echo "FAIL: $link_path is not a symlink"
+AGENTS_QUESTION='What is the instruction in the "About You" section of your global AGENTS.md? Reply with ONLY the instruction text, nothing else.'
+SKILL_QUESTION='What skill should you use when the information needed to complete a task is not already known? Reply with ONLY the skill name, nothing else.'
+
+run_test() {
+  local agent_name="$1"
+  local test_name="$2"
+  local expected="$3"
+  local output_file="$4"
+  shift 4
+  local cmd=("$@")
+
+  if ! timeout "$TIMEOUT" "${cmd[@]}" > "$output_file" 2>/dev/null; then
+    echo "  $test_name: FAIL (command timed out or errored)"
     return 1
   fi
 
-  local actual_target
-  actual_target="$(readlink "$link_path")"
-  if [ "$actual_target" != "$expected_target" ]; then
-    echo "FAIL: $link_path points to $actual_target (expected $expected_target)"
+  local response
+  response=$(tr '[:upper:]' '[:lower:]' < "$output_file" | tr -d '[:space:]')
+  local expected_lower
+  expected_lower=$(echo "$expected" | tr '[:upper:]' '[:lower:]' | tr -d '[:space:]')
+
+  if [[ "$response" == *"$expected_lower"* ]]; then
+    echo "  $test_name: PASS"
+    return 0
+  else
+    echo "  $test_name: FAIL (expected \"$expected\", got \"$(cat "$output_file")\")"
     return 1
   fi
-
-  return 0
 }
 
-check_exists() {
-  local path="$1"
-
-  if [ ! -e "$path" ]; then
-    echo "FAIL: Missing $path"
-    return 1
-  fi
-
-  return 0
-}
-
-check_contains() {
-  local path="$1"
-  local needle="$2"
-
-  if ! grep -q "$needle" "$path"; then
-    echo "FAIL: $path does not contain $needle"
-    return 1
-  fi
-
-  return 0
-}
-
-echo "=== Testing AI Agent Configurations ==="
-echo ""
-echo "Running deterministic validation checks..."
-echo ""
-
-# Run configure-all first to ensure configs are up to date
-echo "1. Updating configurations..."
-"$CONFIG_DIR/scripts/configure-all.sh"
-echo ""
-
-echo "2. Running validation tests..."
+echo "=== Functional Test: AI Agent Configurations ==="
 echo ""
 all_passed=true
 
+# --- Claude Code ---
+echo "Claude Code:"
 claude_ok=true
+
+if ! run_test "Claude Code" "AGENTS.md loaded" "help" "$SCRATCH_DIR/claude_agents.txt" \
+  claude -p --no-session-persistence "$AGENTS_QUESTION"; then
+  claude_ok=false
+fi
+
+if ! run_test "Claude Code" "coding-task skill" "discover" "$SCRATCH_DIR/claude_skill.txt" \
+  claude -p --no-session-persistence "$SKILL_QUESTION"; then
+  claude_ok=false
+fi
+
+if [ "$claude_ok" = false ]; then all_passed=false; fi
+echo ""
+
+# --- Codex CLI ---
+echo "Codex CLI:"
 codex_ok=true
+
+if ! run_test "Codex CLI" "AGENTS.md loaded" "help" "$SCRATCH_DIR/codex_agents.txt" \
+  codex exec --skip-git-repo-check "$AGENTS_QUESTION"; then
+  codex_ok=false
+fi
+
+if ! run_test "Codex CLI" "coding-task skill" "discover" "$SCRATCH_DIR/codex_skill.txt" \
+  codex exec --skip-git-repo-check "$SKILL_QUESTION"; then
+  codex_ok=false
+fi
+
+if [ "$codex_ok" = false ]; then all_passed=false; fi
+echo ""
+
+# --- Cursor CLI ---
+echo "Cursor CLI:"
 cursor_ok=true
-cursor_reason=""
 
-if ! check_symlink "$HOME/.claude/CLAUDE.md" "$BASE_CONFIG_DIR/AGENTS.md"; then
-  claude_ok=false
-fi
-
-if ! check_symlink "$HOME/.claude/skills" "$BASE_CONFIG_DIR/skills"; then
-  claude_ok=false
-fi
-
-if ! check_exists "$HOME/.claude/skills/coding-task"; then
-  claude_ok=false
-fi
-
-# Verify AGENTS.md contains expected content (the coding-task skill reference)
-if ! check_contains "$BASE_CONFIG_DIR/AGENTS.md" "coding-task"; then
-  claude_ok=false
-fi
-
-if ! check_symlink "$CODEX_HOME/AGENTS.md" "$BASE_CONFIG_DIR/AGENTS.md"; then
-  codex_ok=false
-fi
-
-if ! check_symlink "$CODEX_HOME/skills/coding-task" "$BASE_CONFIG_DIR/skills/coding-task"; then
-  codex_ok=false
-fi
-
-if ! check_exists "$CODEX_HOME/skills/coding-task/SKILL.md"; then
-  codex_ok=false
-fi
-
-if ! check_symlink "$HOME/.cursor/skills" "$BASE_CONFIG_DIR/skills"; then
+if ! run_test "Cursor CLI" "AGENTS.md loaded" "help" "$SCRATCH_DIR/cursor_agents.txt" \
+  cursor agent -p "$AGENTS_QUESTION"; then
   cursor_ok=false
 fi
 
-if ! check_exists "$HOME/.cursor/skills/coding-task"; then
+if ! run_test "Cursor CLI" "coding-task skill" "discover" "$SCRATCH_DIR/cursor_skill.txt" \
+  cursor agent -p "$SKILL_QUESTION"; then
   cursor_ok=false
 fi
 
-# Verify AGENTS.md contains expected content (the coding-task skill reference)
-# Note: Cursor user rules must be set manually, but we can verify the source file
-if ! check_contains "$BASE_CONFIG_DIR/AGENTS.md" "coding-task"; then
-  cursor_ok=false
-  cursor_reason="AGENTS.md missing expected content"
-fi
+if [ "$cursor_ok" = false ]; then all_passed=false; fi
+echo ""
 
-if [ "$claude_ok" = true ]; then
-  echo "Claude Code: PASS"
-else
-  echo "Claude Code: FAIL"
-  all_passed=false
-fi
-
-if [ "$codex_ok" = true ]; then
-  echo "Codex CLI: PASS"
-else
-  echo "Codex CLI: FAIL"
-  all_passed=false
-fi
-
-if [ "$cursor_ok" = true ]; then
-  echo "Cursor CLI: PASS (skills linked; user rules must be set manually)"
-else
-  if [ -n "$cursor_reason" ]; then
-    echo "Cursor CLI: FAIL ($cursor_reason)"
-  else
-    echo "Cursor CLI: FAIL"
-  fi
-  all_passed=false
-fi
-
+# --- Summary ---
+echo "=== Results ==="
 if [ "$all_passed" = true ]; then
   echo "All tests passed"
 else
   echo "Some tests failed"
+  exit 1
 fi
-
-echo ""
-echo "=== Validation complete ==="

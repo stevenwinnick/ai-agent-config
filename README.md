@@ -47,15 +47,21 @@ This repo maintains a single source of truth for machine-wide AI agent configura
 
 Always run tests before pushing modifications to this repo.
 
-#### Validation Script
+#### Validation Scripts
 
-Run the test script to update all configs and validate that they're working:
+Run the test script to validate that all agents can see AGENTS.md and the `coding-task` skill:
 
 ```bash
 ./scripts/test-configs.sh
 ```
 
-This script uses a Claude Code instance to validate that Claude Code, the Cursor CLI, and the Codex CLI all see a custom instruction from the general AGENTS.md file and have access to the `file-editing-task` skill
+Or update configs and test in one step:
+
+```bash
+./scripts/update-and-test-configs.sh
+```
+
+These scripts run each agent (Claude Code, Codex CLI, Cursor CLI) in headless mode with probe questions to confirm that AGENTS.md is loaded and the `explore-and-discover` skill is accessible.
 
 #### Manual Testing
 
@@ -64,9 +70,9 @@ This script uses a Claude Code instance to validate that Claude Code, the Cursor
 Manually validate configurations used by the Cursor UI (matches validation script checks):
 
 1. Open Cursor Settings (Cmd+Shift+J) and navigate to **Rules**
-2. Verify skills appear in the **Agent Decides** section (e.g., `file-editing-task`)
-3. In Agent chat, type `/file-editing-task` to confirm the skill is available
-4. Ask Cursor: "What skill should I use for file editing tasks?" - response should reference 'file-editing-task'
+2. Verify skills appear in the **Agent Decides** section (e.g., `explore-and-discover`)
+3. In Agent chat, type `/explore-and-discover` to confirm the skill is available
+4. Ask Cursor: "What skill should I use for file editing tasks?" - response should reference 'explore-and-discover'
 
 Don't forget that setting a global `AGENTS.md` requires a manual operation for Cursor. You'll have to
 
