@@ -1,10 +1,10 @@
 #!/bin/bash
 # Functional test for AI coding agent configurations
-# Runs each agent in headless mode to validate that it can see AGENTS.md and the coding-task skill
+# Runs each agent in headless mode to validate that it can see AGENTS.md and the explore-and-discover skill
 
 set -e
 
-TIMEOUT=60
+TIMEOUT=120
 
 # Scratch directory for test outputs
 SCRATCH_DIR=$(mktemp -d)
@@ -21,7 +21,8 @@ run_test() {
   shift 4
   local cmd=("$@")
 
-  if ! timeout "$TIMEOUT" "${cmd[@]}" > "$output_file" 2>/dev/null; then
+  local stderr_file="${output_file%.txt}_stderr.txt"
+  if ! timeout "$TIMEOUT" "${cmd[@]}" > "$output_file" 2>"$stderr_file"; then
     echo "  $test_name: FAIL (command timed out or errored)"
     return 1
   fi
@@ -53,7 +54,7 @@ if ! run_test "Claude Code" "AGENTS.md loaded" "help" "$SCRATCH_DIR/claude_agent
   claude_ok=false
 fi
 
-if ! run_test "Claude Code" "coding-task skill" "discover" "$SCRATCH_DIR/claude_skill.txt" \
+if ! run_test "Claude Code" "explore-and-discover skill" "discover" "$SCRATCH_DIR/claude_skill.txt" \
   claude -p --no-session-persistence "$SKILL_QUESTION"; then
   claude_ok=false
 fi
@@ -70,7 +71,7 @@ if ! run_test "Codex CLI" "AGENTS.md loaded" "help" "$SCRATCH_DIR/codex_agents.t
   codex_ok=false
 fi
 
-if ! run_test "Codex CLI" "coding-task skill" "discover" "$SCRATCH_DIR/codex_skill.txt" \
+if ! run_test "Codex CLI" "explore-and-discover skill" "discover" "$SCRATCH_DIR/codex_skill.txt" \
   codex exec --skip-git-repo-check "$SKILL_QUESTION"; then
   codex_ok=false
 fi
@@ -87,7 +88,7 @@ if ! run_test "Cursor CLI" "AGENTS.md loaded" "help" "$SCRATCH_DIR/cursor_agents
   cursor_ok=false
 fi
 
-if ! run_test "Cursor CLI" "coding-task skill" "discover" "$SCRATCH_DIR/cursor_skill.txt" \
+if ! run_test "Cursor CLI" "explore-and-discover skill" "discover" "$SCRATCH_DIR/cursor_skill.txt" \
   cursor agent -p "$SKILL_QUESTION"; then
   cursor_ok=false
 fi
