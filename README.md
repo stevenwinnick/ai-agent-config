@@ -99,7 +99,7 @@ Each tool has its own configuration script with custom output generation and sym
 
 The `CODE_ROOT` environment variable is expected to be be set to the root directory for all repos.
 
-Example (add to your shell config):
+Example (add to your shell config using the `custom-shell-setup` skill):
 ```bash
-export CODE_ROOT="$HOME/dd"
+export CODE_ROOT="$HOME"
 ```
