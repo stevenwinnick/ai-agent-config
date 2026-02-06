@@ -1,41 +1,54 @@
 #!/bin/bash
 # Initialize a new repo in the preferred worktree directory structure and create its GitHub remote
-# Usage: init-repo.sh <repo-name> [--public]
+# Usage: init-repo.sh <repo-name> [--description <description>] [--public]
 
 set -e
 
 REPO_NAME=""
 VISIBILITY="private"
+DESCRIPTION=""
 
 # Parse arguments
-for arg in "$@"; do
-    case "$arg" in
+while [[ $# -gt 0 ]]; do
+    case "$1" in
         --public)
             VISIBILITY="public"
+            shift
             ;;
         --private)
             VISIBILITY="private"
+            shift
+            ;;
+        --description)
+            if [[ -z "$2" ]]; then
+                echo "Error: --description requires a value"
+                echo "Usage: init-repo.sh <repo-name> [--description <description>] [--public]"
+                exit 1
+            fi
+            DESCRIPTION="$2"
+            shift 2
             ;;
         -*)
-            echo "Error: Unknown option '$arg'"
-            echo "Usage: init-repo.sh <repo-name> [--public]"
+            echo "Error: Unknown option '$1'"
+            echo "Usage: init-repo.sh <repo-name> [--description <description>] [--public]"
             exit 1
             ;;
         *)
             if [[ -z "$REPO_NAME" ]]; then
-                REPO_NAME="$arg"
+                REPO_NAME="$1"
             else
-                echo "Error: Unexpected argument '$arg'"
-                echo "Usage: init-repo.sh <repo-name> [--public]"
+                echo "Error: Unexpected argument '$1'"
+                echo "Usage: init-repo.sh <repo-name> [--description <description>] [--public]"
                 exit 1
             fi
+            shift
             ;;
     esac
 done
 
 if [[ -z "$REPO_NAME" ]]; then
     echo "Error: Repo name is required"
-    echo "Usage: init-repo.sh <repo-name> [--public]"
+    echo "Usage: init-repo.sh <repo-name> [--description <description>] [--public]"
     exit 1
 fi
 
@@ -74,7 +87,7 @@ git -C "$REPO_PATH" add .gitignore
 git -C "$REPO_PATH" commit -m "Initial commit"
 
 # Create GitHub repo and add as remote
-gh repo create "$GH_USER/$REPO_NAME" "--$VISIBILITY" --description ""
+gh repo create "$GH_USER/$REPO_NAME" "--$VISIBILITY" --description "$DESCRIPTION"
 git -C "$REPO_PATH" remote add origin "git@github.com:$GH_USER/$REPO_NAME.git"
 
 # Push initial commit

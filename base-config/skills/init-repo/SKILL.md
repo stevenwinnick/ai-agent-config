@@ -1,7 +1,7 @@
 ---
 name: init-repo
 description: Initialize a new local git repo in the preferred worktree directory structure and create its GitHub remote
-argument-hint: "<repo-name> [--public]"
+argument-hint: "<repo-name> [--description <description>] [--public]"
 disable-model-invocation: true
 ---
 
@@ -20,6 +20,7 @@ Based on $ARGUMENTS, run the script:
 ### Arguments
 
 - `<repo-name>` (required) — Name of the new repo
+- `--description <description>` (optional) — Description for the GitHub repo
 - `--public` (optional) — Make the GitHub repo public. Defaults to private
 
 ### What It Does
