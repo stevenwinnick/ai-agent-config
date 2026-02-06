@@ -24,7 +24,7 @@ Based on $ARGUMENTS, run the script:
 ### What It Does
 
 1. Parses the repo identifier to determine the repo name
-2. Clones the repo into `$CODE_ROOT/<repo-name>/trunk/<repo-name>/`
+2. Clones the repo into `$CODE_ROOT/<repo-name>/<default-branch-name>/<repo-name>/`
 3. Creates the empty `worktrees/` directory
 
 ### Result

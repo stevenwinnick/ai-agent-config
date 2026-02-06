@@ -25,7 +25,7 @@ Based on $ARGUMENTS, run the script:
 
 1. Validates the source is a git repo
 2. Creates the preferred directory structure at `$CODE_ROOT/<repo-name>/`
-3. Moves the existing repo into `$CODE_ROOT/<repo-name>/trunk/<repo-name>/`
+3. Moves the existing repo into `$CODE_ROOT/<repo-name>/<default-branch-name>/<repo-name>/`
 4. Creates the empty `worktrees/` directory
 5. Ensures the checked-out branch is the default branch
 
