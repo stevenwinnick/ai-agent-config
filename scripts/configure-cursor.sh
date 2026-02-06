@@ -28,11 +28,14 @@ echo "Copied base-config/skills/ -> ~/.cursor/skills/"
 
 # Note: Cursor also reads ~/.claude/skills/ via Claude compatibility
 # If configure-claude.sh has run, skills are available from there too
+if cat "$BASE_CONFIG_DIR/AGENTS.md" | pbcopy 2>/dev/null; then
+  echo "Copied AGENTS.md to clipboard."
+else
+  echo "Could not copy to clipboard. Run: cat $BASE_CONFIG_DIR/AGENTS.md | pbcopy"
+fi
 echo "Cursor configuration complete."
 echo "=== MANUAL STEP REQUIRED ==="
-echo "Copy the contents of AGENTS.md into Cursor User Rules:"
-echo "  1. Open Cursor Settings (Cmd+Shift+J)"
-echo "  2. Navigate to: Rules and Commands > User Rules"
-echo "  3. Paste the contents of: $BASE_CONFIG_DIR/AGENTS.md"
-echo "To copy AGENTS.md to clipboard, run:"
-echo "cat $BASE_CONFIG_DIR/AGENTS.md | pbcopy"
+echo "Paste AGENTS.md (copied to clipboard above) into Cursor User Rules:"
+echo "1. Open Cursor Settings (Cmd+Shift+J)"
+echo "2. Navigate to: Rules and Commands > User Rules"
+echo "3. Paste from clipboard (Cmd+V)"
