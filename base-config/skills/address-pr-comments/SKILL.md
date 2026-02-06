@@ -32,35 +32,56 @@ If no PR is found, stop and inform the user.
 
 Determine whether to fetch all comments or specific ones based on Step 1.
 
-Fetch the relevant comments:
+There are two types of PR comments to fetch:
+
+### Line-level review comments
+
+These are comments attached to specific lines of code in the diff.
 
 ```bash
-# All pending review comments
+# All pending line-level review comments
 gh api repos/{owner}/{repo}/pulls/{pr_number}/comments --jq '.[] | select(.in_reply_to_id == null) | {id, path, line, body, diff_hunk}'
 
 # Or a specific comment by ID
 gh api repos/{owner}/{repo}/pulls/{pr_number}/comments/{comment_id} --jq '{id, path, line, body, diff_hunk}'
 ```
 
-Also check for unresolved review threads to understand which comments still need attention:
+### Review-level comments
+
+These are top-level comments submitted as part of a review (the body text written when a reviewer submits a review with "Comment", "Approve", or "Request changes"). They are not attached to specific lines.
+
+```bash
+# All reviews with non-empty body text
+gh api repos/{owner}/{repo}/pulls/{pr_number}/reviews --jq '.[] | select(.body != null and .body != "") | {id, body, state, user: .user.login}'
+```
+
+### Determine which comments still need attention
 
 ```bash
 gh pr view {pr_number} --json reviewDecision,reviews
 ```
 
-Filter to only comments that haven't been addressed yet (no reply from the PR author indicating the comment was addressed).
+Filter to only comments that haven't been addressed yet (no reply from the PR author indicating the comment was addressed). For review-level comments, consider a review addressed if a subsequent reply or commit has addressed the feedback.
 
-If there are no unresolved comments, inform the user and stop.
+If there are no unresolved comments of either type, inform the user and stop.
 
 ## Step 3: Present Comments for Confirmation
 
 If specific comments were provided, skip this step.
 
-Before making any changes, present the list of comments to be addressed in a clear summary. For each comment, include:
+Before making any changes, present the list of comments to be addressed in a clear summary.
+
+For line-level comments, include:
 
 - The file and line it refers to
 - The comment body
 - Your understanding of what change is being requested
+
+For review-level comments, include:
+
+- The reviewer and review state (e.g., "requested changes", "commented")
+- The comment body
+- Your understanding of what changes are being requested
 
 ## Step 4: Address Each Comment
 
@@ -69,10 +90,22 @@ For each comment to be addressed:
 1. Read the relevant file and surrounding context using the `explore-and-discover` skill if the context from the diff hunk is insufficient
 2. Understand what the reviewer is requesting
 3. Address the comment — this may involve code changes (following the `code-standards` skill), documentation updates, configuration changes, or any other appropriate action
-4. Reply to the comment on GitHub indicating what was done and which AI agent/tool made the change:
+4. Reply on GitHub indicating what was done and which AI agent/tool made the change:
+
+For line-level comments, reply to the comment thread:
 
 ```bash
 gh api repos/{owner}/{repo}/pulls/{pr_number}/comments/{comment_id}/replies -f body="<brief description of the action taken>
+
+— addressed by <AI tool name>"
+```
+
+For review-level comments, leave a regular PR comment referencing the review:
+
+```bash
+gh pr comment {pr_number} --body "Addressing review from @{reviewer_username}:
+
+<brief description of the actions taken>
 
 — addressed by <AI tool name>"
 ```
