@@ -1,7 +1,9 @@
 #!/bin/bash
-# Symlink Cursor configuration
+# Configure Cursor skills
 # Cursor reads skills from ~/.cursor/skills/ (global) and ~/.claude/skills/ (Claude compatibility)
 # See: https://cursor.com/docs/context/skills
+# NOTE: Cursor does not reliably discover skills in symlinked directories, so we copy instead
+# See: https://forum.cursor.com/t/global-symlinked-skills-are-not-discovered-by-cursor/150028
 
 set -e
 
@@ -9,11 +11,13 @@ BASE_CONFIG_DIR="$HOME/.ai-agent-config/base-config"
 
 echo "Configuring Cursor..."
 
-# Symlink skills directory (Cursor reads from ~/.cursor/skills/ globally)
+# Copy skills directory (Cursor doesn't reliably follow symlinks)
 mkdir -p ~/.cursor
-rm -rf ~/.cursor/skills
-ln -s "$BASE_CONFIG_DIR/skills" ~/.cursor/skills
-echo "Symlinked ~/.cursor/skills/ -> base-config/skills/"
+if [ -d ~/.cursor/skills ]; then
+    rm -rf ~/.cursor/skills
+fi
+rsync -av --delete "$BASE_CONFIG_DIR/skills/" ~/.cursor/skills/
+echo "Copied base-config/skills/ -> ~/.cursor/skills/"
 
 # Note: Cursor also reads ~/.claude/skills/ via Claude compatibility
 # If configure-claude.sh has run, skills are available from there too
