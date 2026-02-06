@@ -1,12 +1,12 @@
 ---
-name: coding-task
-description: Complete a task which edits code. Use when the user describes a feature, bug fix, or any coding task that requires code changes.
+name: file-editing-task
+description: Complete a task which edits files. Use when the user describes a feature, bug fix, configuration change, or any task that requires file modifications.
 argument-hint: [description]
 ---
 
-# Coding Task Workflow
+# File Editing Task Workflow
 
-You are starting a new development task. Follow this workflow precisely.
+You are starting a new task that involves editing files. Follow this workflow precisely.
 
 ## Step 1: Parse the Request
 
@@ -50,4 +50,4 @@ Pull request: <link to the pull request>
 
 ## Step 9: Iterate
 
-If the user requests further code changes, return to step 3 and continue from there
+If the user requests further changes, return to step 3 and continue from there
