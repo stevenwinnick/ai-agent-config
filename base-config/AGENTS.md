@@ -25,7 +25,7 @@ If improvements can be made to your configuration that would make you more helpf
 
 ### Coding Tasks
 
-All tasks requiring edits to code should use the `coding-task` skill
+**IMPORTANT**: You MUST invoke the `coding-task` skill for ALL tasks that involve editing code. This includes bug fixes, features, refactors, and any other code modifications. Do NOT start editing code directly - always invoke `coding-task` first, as it orchestrates critical workflow steps (worktree setup, planning, implementation, PR creation, and review) that would otherwise be skipped
 
 ## Communication Preferences
 
