@@ -15,8 +15,10 @@ run_with_timeout() {
   # Run the command in the background
   "$@" &
   local pid=$!
-  # Spawn a watchdog that kills the command after the timeout
-  ( sleep "$timeout_secs" && kill "$pid" 2>/dev/null ) &
+  # Spawn a watchdog that kills the command after the timeout.
+  # Redirect stdout/stderr so the watchdog's sleep doesn't hold the
+  # command substitution pipe open after the command finishes.
+  ( sleep "$timeout_secs" && kill "$pid" 2>/dev/null ) &>/dev/null &
   local watchdog=$!
   # Wait for the command to finish (or be killed)
   wait "$pid" 2>/dev/null
