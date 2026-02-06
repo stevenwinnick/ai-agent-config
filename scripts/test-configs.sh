@@ -78,12 +78,12 @@ if ! check_symlink "$HOME/.claude/skills" "$BASE_CONFIG_DIR/skills"; then
   claude_ok=false
 fi
 
-if ! check_exists "$HOME/.claude/skills/file-editing-task"; then
+if ! check_exists "$HOME/.claude/skills/coding-task"; then
   claude_ok=false
 fi
 
-# Verify AGENTS.md contains expected content (the file-editing-task skill reference)
-if ! check_contains "$BASE_CONFIG_DIR/AGENTS.md" "file-editing-task"; then
+# Verify AGENTS.md contains expected content (the coding-task skill reference)
+if ! check_contains "$BASE_CONFIG_DIR/AGENTS.md" "coding-task"; then
   claude_ok=false
 fi
 
@@ -91,11 +91,11 @@ if ! check_symlink "$CODEX_HOME/AGENTS.md" "$BASE_CONFIG_DIR/AGENTS.md"; then
   codex_ok=false
 fi
 
-if ! check_symlink "$CODEX_HOME/skills/file-editing-task" "$BASE_CONFIG_DIR/skills/file-editing-task"; then
+if ! check_symlink "$CODEX_HOME/skills/coding-task" "$BASE_CONFIG_DIR/skills/coding-task"; then
   codex_ok=false
 fi
 
-if ! check_exists "$CODEX_HOME/skills/file-editing-task/SKILL.md"; then
+if ! check_exists "$CODEX_HOME/skills/coding-task/SKILL.md"; then
   codex_ok=false
 fi
 
@@ -103,13 +103,13 @@ if ! check_symlink "$HOME/.cursor/skills" "$BASE_CONFIG_DIR/skills"; then
   cursor_ok=false
 fi
 
-if ! check_exists "$HOME/.cursor/skills/file-editing-task"; then
+if ! check_exists "$HOME/.cursor/skills/coding-task"; then
   cursor_ok=false
 fi
 
-# Verify AGENTS.md contains expected content (the file-editing-task skill reference)
+# Verify AGENTS.md contains expected content (the coding-task skill reference)
 # Note: Cursor user rules must be set manually, but we can verify the source file
-if ! check_contains "$BASE_CONFIG_DIR/AGENTS.md" "file-editing-task"; then
+if ! check_contains "$BASE_CONFIG_DIR/AGENTS.md" "coding-task"; then
   cursor_ok=false
   cursor_reason="AGENTS.md missing expected content"
 fi
