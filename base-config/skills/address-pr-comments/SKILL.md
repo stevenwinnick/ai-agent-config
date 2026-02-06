@@ -45,25 +45,27 @@ If there are no unresolved comments, inform the user and stop.
 
 ## Step 3: Present Comments for Confirmation
 
+If a specific comment was provided, skip this step.
+
 Before making any changes, present the list of comments to be addressed in a clear summary. For each comment, include:
 
 - The file and line it refers to
 - The comment body
 - Your understanding of what change is being requested
 
-Ask the user to confirm which comments to address, or to proceed with all of them.
-
 ## Step 4: Address Each Comment
 
 For each comment to be addressed:
 
-1. Read the relevant file and surrounding code using the `explore-and-discover` skill if the context from the diff hunk is insufficient
-2. Understand what change the reviewer is requesting
-3. Make the code change, following the `code-standards` skill
-4. Reply to the comment on GitHub indicating what was done:
+1. Read the relevant file and surrounding context using the `explore-and-discover` skill if the context from the diff hunk is insufficient
+2. Understand what the reviewer is requesting
+3. Address the comment — this may involve code changes (following the `code-standards` skill), documentation updates, configuration changes, or any other appropriate action
+4. Reply to the comment on GitHub indicating what was done and which AI agent/tool made the change:
 
 ```bash
-gh api repos/{owner}/{repo}/pulls/{pr_number}/comments/{comment_id}/replies -f body="<brief description of the change made>"
+gh api repos/{owner}/{repo}/pulls/{pr_number}/comments/{comment_id}/replies -f body="<brief description of the action taken>
+
+— addressed by <AI tool name>"
 ```
 
 If a comment is unclear or you're unsure how to address it, skip it and flag it to the user rather than guessing.
