@@ -32,18 +32,20 @@ If no PR is found, stop and inform the user.
 
 Determine whether to fetch all comments or specific ones based on Step 1.
 
-There are two types of PR comments to fetch:
+There are four types of PR comments to fetch:
 
 ### Line-level review comments
 
 These are comments attached to specific lines of code in the diff.
 
 ```bash
-# All pending line-level review comments
-gh api repos/{owner}/{repo}/pulls/{pr_number}/comments --jq '.[] | select(.in_reply_to_id == null) | {id, path, line, body, diff_hunk}'
+# All pending line-level review comments (top-level only, not replies)
+gh api repos/{owner}/{repo}/pulls/{pr_number}/comments \
+  --jq '[.[] | select(.in_reply_to_id == null) | {id, path, line, body, diff_hunk}]'
 
 # Or a specific comment by ID
-gh api repos/{owner}/{repo}/pulls/{pr_number}/comments/{comment_id} --jq '{id, path, line, body, diff_hunk}'
+gh api repos/{owner}/{repo}/pulls/{pr_number}/comments/{comment_id} \
+  --jq '{id, path, line, body, diff_hunk}'
 ```
 
 ### Review-level comments
@@ -52,7 +54,31 @@ These are top-level comments submitted as part of a review (the body text writte
 
 ```bash
 # All reviews with non-empty body text
-gh api repos/{owner}/{repo}/pulls/{pr_number}/reviews --jq '.[] | select(.body != null and .body != "") | {id, body, state, user: .user.login}'
+gh api repos/{owner}/{repo}/pulls/{pr_number}/reviews \
+  --jq '[.[] | select(.body | length > 0) | {id, body, state, user: .user.login}]'
+```
+
+### Conversation comments
+
+These are general comments on the PR conversation thread, not attached to code or a review. Since GitHub treats PRs as issues, these are fetched via the issues API.
+
+```bash
+# All conversation-level comments
+gh api repos/{owner}/{repo}/issues/{pr_number}/comments \
+  --jq '[.[] | {id, body, user: .user.login}]'
+```
+
+### Commit comments
+
+These are comments left directly on individual commits included in the PR (via the commit's page, not through the review flow).
+
+```bash
+# Get commits on the PR
+gh api repos/{owner}/{repo}/pulls/{pr_number}/commits --jq '[.[].sha]'
+
+# Then for each commit SHA that has comments
+gh api repos/{owner}/{repo}/commits/{commit_sha}/comments \
+  --jq '[.[] | {id, body, path, line, user: .user.login}]'
 ```
 
 ### Determine which comments still need attention
@@ -63,27 +89,9 @@ gh pr view {pr_number} --json reviewDecision,reviews
 
 Filter to only comments that haven't been addressed yet (no reply from the PR author indicating the comment was addressed). For review-level comments, consider a review addressed if a subsequent reply or commit has addressed the feedback.
 
-If there are no unresolved comments of either type, inform the user and stop.
+If there are no unresolved comments across all types, inform the user and stop.
 
-## Step 3: Present Comments for Confirmation
-
-If specific comments were provided, skip this step.
-
-Before making any changes, present the list of comments to be addressed in a clear summary.
-
-For line-level comments, include:
-
-- The file and line it refers to
-- The comment body
-- Your understanding of what change is being requested
-
-For review-level comments, include:
-
-- The reviewer and review state (e.g., "requested changes", "commented")
-- The comment body
-- Your understanding of what changes are being requested
-
-## Step 4: Address Each Comment
+## Step 3: Address Each Comment
 
 For each comment to be addressed:
 
@@ -95,30 +103,31 @@ For each comment to be addressed:
 For line-level comments, reply to the comment thread:
 
 ```bash
-gh api repos/{owner}/{repo}/pulls/{pr_number}/comments/{comment_id}/replies -f body="<brief description of the action taken>
+gh api repos/{owner}/{repo}/pulls/{pr_number}/comments/{comment_id}/replies \
+  -f body='[comment from <AI tool name>]
 
-— addressed by <AI tool name>"
+<brief description of the action taken>'
 ```
 
-For review-level comments, leave a regular PR comment referencing the review:
+For review-level, conversation, and commit comments, leave a PR comment:
 
 ```bash
-gh pr comment {pr_number} --body "Addressing review from @{reviewer_username}:
+gh pr comment {pr_number} --body '[comment from <AI tool name>]
 
-<brief description of the actions taken>
+Addressing feedback from @{username}:
 
-— addressed by <AI tool name>"
+<brief description of the actions taken>'
 ```
 
 If a comment is unclear or you're unsure how to address it, skip it and flag it to the user rather than guessing.
 
-## Step 5: Push and Update
+## Step 4: Push and Update
 
 1. Commit the changes with a descriptive message referencing the comments addressed
 2. Push to the remote branch
 3. Use the `update-pull-request` skill to update the PR
 
-## Step 6: Report
+## Step 5: Report
 
 Present a summary of what was done:
 
