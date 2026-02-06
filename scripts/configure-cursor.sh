@@ -2,8 +2,9 @@
 # Configure Cursor skills
 # Cursor reads skills from ~/.cursor/skills/ (global) and ~/.claude/skills/ (Claude compatibility)
 # See: https://cursor.com/docs/context/skills
-# NOTE: Cursor does not reliably discover skills in symlinked directories, so we copy instead
+# NOTE: As of February 2026, Cursor does not reliably discover skills in symlinked directories, so we copy instead
 # See: https://forum.cursor.com/t/global-symlinked-skills-are-not-discovered-by-cursor/150028
+# This workaround can be removed if Cursor fixes the underlying issue in the future
 
 set -e
 
@@ -13,9 +14,15 @@ echo "Configuring Cursor..."
 
 # Copy skills directory (Cursor doesn't reliably follow symlinks)
 mkdir -p ~/.cursor
+# Remove existing skills directory/symlink to ensure we start fresh
+# This is necessary to handle the case where ~/.cursor/skills might be a symlink
 if [ -d ~/.cursor/skills ]; then
     rm -rf ~/.cursor/skills
 fi
+# Sync skills from base-config to Cursor's expected location
+# -a: archive mode (preserves permissions, timestamps, etc.)
+# -v: verbose output
+# --delete: remove files in destination that don't exist in source (ensures exact sync)
 rsync -av --delete "$BASE_CONFIG_DIR/skills/" ~/.cursor/skills/
 echo "Copied base-config/skills/ -> ~/.cursor/skills/"
 
