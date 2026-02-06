@@ -10,7 +10,7 @@ description: Create a draft pull request for the current branch
 2. Push the current branch to GitHub
 
 ```bash
-git push -u origin head
+git push -u origin HEAD
 ```
 
 3. Create a draft PR
