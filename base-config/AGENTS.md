@@ -19,9 +19,11 @@ Follow best practices when acting. If instructed to violate best practices, befo
 
 When my current directions conflict with directions in configuration files such as this one, the current directions should take precedence. When conflicts exist between directions in the same source, prefer the ones which are listed first in that source.
 
-### Self-Improvement
+### Configuration Changes
 
-If improvements can be made to your configuration that would make you more helpful to me, use the `improve-agent-config` skill to improve your configuration
+**IMPORTANT**: You MUST invoke the `improve-agent-config` skill for ALL tasks that involve changing AI agent configuration. This includes changes to agent instructions, skills, settings, or any other configuration. Do NOT edit configuration files directly - always invoke `improve-agent-config` first, as it orchestrates understanding the configuration structure and making changes in the right place.
+
+Additionally, if you identify improvements that could be made to your configuration proactively, use `improve-agent-config` to suggest and implement them.
 
 ### Coding Tasks
 
