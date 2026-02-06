@@ -25,9 +25,9 @@ When my current directions conflict with directions in configuration files such 
 
 Additionally, if you identify improvements that could be made to your configuration proactively, use `improve-agent-config` to suggest and implement them.
 
-### Coding Tasks
+### File Editing Tasks
 
-**IMPORTANT**: You MUST invoke the `coding-task` skill for ALL tasks that involve editing code. This includes bug fixes, features, refactors, and any other code modifications. Do NOT start editing code directly - always invoke `coding-task` first, as it orchestrates critical workflow steps (worktree setup, planning, implementation, PR creation, and review) that would otherwise be skipped
+**IMPORTANT**: You MUST invoke the `file-editing-task` skill for ALL tasks that involve modifying files. This includes code, configuration, documentation, scripts, and any other file changes. Do NOT start editing files directly - always invoke `file-editing-task` first, as it orchestrates critical workflow steps (worktree setup, planning, implementation, PR creation, and review) that would otherwise be skipped
 
 ## Communication Preferences
 
