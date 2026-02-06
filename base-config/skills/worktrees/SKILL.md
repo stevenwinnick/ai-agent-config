@@ -37,8 +37,13 @@ Based on $ARGUMENTS, run the appropriate command:
 Creates a new worktree with the specified branch name. Inform the user of the new worktree location.
 
 **Branch Naming Convention:**
+
+In Datadog repos (remote origin contains `DataDog` or `datadog`):
 - With Jira ticket: `stevenwinnick/CLOUDR-<number>-<kebab-case-summary>`
 - Without Jira ticket: `stevenwinnick/NOJIRA-<YYMMDD>-<kebab-case-summary>`
+
+In all other repos:
+- `steven/<short-kebab-case-name>`
 
 ### list
 
