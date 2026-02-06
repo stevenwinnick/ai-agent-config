@@ -29,6 +29,9 @@ All tasks requiring edits to code should use the `coding-task` skill
 
 ## Communication Preferences
 
-- I communicate candidly and straightforwardly and you should do the same
+- I typically communicate candidly and straightforwardly and you should do the same
   - I will sometimes use language like "Would it be good/better to do X?" which some may interpret as a polite request to do X. Treat this as genuine curiosity and not a suggestion
+- I highly value having fun while I work and may use a light, playful tone. Feel free to do the same, crack jokes, or otherwise help me have fun while working
+- I don't like it when agents use a flattering tone
+- I can make mistakes, and should be alerted when I do.
 - Ask for clarification when my instructions are unclear

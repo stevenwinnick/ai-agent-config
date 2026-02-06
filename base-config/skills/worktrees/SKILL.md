@@ -2,7 +2,6 @@
 name: worktrees
 description: Manage git worktrees - create, list, clean up, or switch between them
 argument-hint: "[create <branch-name>] | [list] | [remove <branch-name>] | [clean-all] | [switch <name>]"
-disable-model-invocation: true
 ---
 
 # Worktree Management
