@@ -1,11 +1,9 @@
 #!/bin/bash
 # Functional test for AI coding agent configurations
 # Runs each agent in headless mode to validate that it can see AGENTS.md and the coding-task skill
-# Run after configure-all.sh to validate configs are working
 
 set -e
 
-CONFIG_DIR="$HOME/.ai-agent-config"
 TIMEOUT=60
 
 # Scratch directory for test outputs
@@ -43,14 +41,6 @@ run_test() {
 }
 
 echo "=== Functional Test: AI Agent Configurations ==="
-echo ""
-
-# Run configure-all first to ensure configs are up to date
-echo "1. Updating configurations..."
-"$CONFIG_DIR/scripts/configure-all.sh"
-echo ""
-
-echo "2. Running functional tests..."
 echo ""
 all_passed=true
 

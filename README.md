@@ -47,15 +47,21 @@ This repo maintains a single source of truth for machine-wide AI agent configura
 
 Always run tests before pushing modifications to this repo.
 
-#### Validation Script
+#### Validation Scripts
 
-Run the test script to update all configs and validate that they're working:
+Run the test script to validate that all agents can see AGENTS.md and the `coding-task` skill:
 
 ```bash
 ./scripts/test-configs.sh
 ```
 
-This script uses a Claude Code instance to validate that Claude Code, the Cursor CLI, and the Codex CLI all see a custom instruction from the general AGENTS.md file and have access to the `coding-task` skill
+Or update configs and test in one step:
+
+```bash
+./scripts/update-and-test-configs.sh
+```
+
+These scripts run each agent (Claude Code, Codex CLI, Cursor CLI) in headless mode with probe questions to confirm that AGENTS.md is loaded and the `coding-task` skill is accessible.
 
 #### Manual Testing
 
