@@ -1,27 +1,36 @@
 ---
 name: address-pr-comments
-description: Address review comments on a pull request. Addresses all unresolved comments or a specific one.
-argument-hint: [comment-url-or-number]
+description: Address review comments on a pull request. Addresses all unresolved comments or specific ones.
+argument-hint: [pr-url-or-number] | [comment-url-or-number ...]
 ---
 
 # Address PR Comments
 
-## Step 1: Identify the Pull Request
+## Step 1: Parse Arguments and Identify the Pull Request
 
-Determine the current PR using:
+Arguments ($ARGUMENTS) can be:
+
+- **Nothing** — use the current branch's PR
+- **A PR URL or number** — address all unresolved comments on that PR
+- **One or more comment URLs or numbers** — address only those specific comments
+
+Determine which case applies by inspecting the arguments. PR URLs contain `/pull/` while comment URLs contain `/discussion_r` or `#discussion_r`. A bare number is ambiguous — treat it as a PR number if it's the only argument, or as comment IDs if there are multiple.
+
+To identify the PR:
 
 ```bash
+# From current branch
 gh pr view --json number,url,headRefName
+
+# From a PR number or URL
+gh pr view <pr-number-or-url> --json number,url,headRefName
 ```
 
-If no PR is found for the current branch, stop and inform the user.
+If no PR is found, stop and inform the user.
 
 ## Step 2: Fetch Comments
 
-If an argument was provided ($ARGUMENTS), it identifies a specific comment to address:
-
-- If the argument is a URL, extract the comment ID from it
-- If the argument is a number, use it as the comment ID
+Determine whether to fetch all comments or specific ones based on Step 1.
 
 Fetch the relevant comments:
 
@@ -45,7 +54,7 @@ If there are no unresolved comments, inform the user and stop.
 
 ## Step 3: Present Comments for Confirmation
 
-If a specific comment was provided, skip this step.
+If specific comments were provided, skip this step.
 
 Before making any changes, present the list of comments to be addressed in a clear summary. For each comment, include:
 
