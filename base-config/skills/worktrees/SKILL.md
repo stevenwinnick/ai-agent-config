@@ -22,6 +22,8 @@ $CODE_ROOT/
         <repo-name>/         # Another worktree
 ```
 
+The `trunk/` directory is a naming convention for where the main working copy lives. It does **not** mean the default branch is called "trunk" — the actual default branch varies by repo (e.g., `main`, `master`, `trunk`, etc.). Always detect the default branch dynamically rather than assuming its name.
+
 Branch names have slashes replaced with `--` in the directory name.
 
 ## Commands

@@ -17,7 +17,7 @@ main_worktree=$(git worktree list --porcelain | grep "^worktree " | head -1 | cu
 
 # Extract worktree paths from porcelain output (lines starting with "worktree ")
 for wt in $(git worktree list --porcelain | grep "^worktree " | cut -d' ' -f2-); do
-    # Skip the main worktree (trunk)
+    # Skip the main worktree (default branch)
     if [[ "$wt" == "$main_worktree" ]]; then
         continue
     fi
