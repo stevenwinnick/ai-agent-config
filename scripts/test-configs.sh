@@ -10,8 +10,8 @@ TIMEOUT=60
 SCRATCH_DIR=$(mktemp -d)
 trap 'rm -rf "$SCRATCH_DIR"' EXIT
 
-AGENTS_QUESTION='My AGENTS.md instructions say I am "an instance of an AI agent being directed by" someone. Who is that person? Reply with ONLY their first name, nothing else.'
-SKILL_QUESTION='Do you have access to a skill called "coding-task"? Reply with ONLY "yes" or "no", nothing else.'
+AGENTS_QUESTION='What is the instruction in the "About You" section of your global AGENTS.md? Reply with ONLY the instruction text, nothing else.'
+SKILL_QUESTION='What skill should you use when the information needed to complete a task is not already known? Reply with ONLY the skill name, nothing else.'
 
 run_test() {
   local agent_name="$1"
@@ -48,12 +48,12 @@ all_passed=true
 echo "Claude Code:"
 claude_ok=true
 
-if ! run_test "Claude Code" "AGENTS.md loaded" "steven" "$SCRATCH_DIR/claude_agents.txt" \
+if ! run_test "Claude Code" "AGENTS.md loaded" "help" "$SCRATCH_DIR/claude_agents.txt" \
   claude -p --no-session-persistence "$AGENTS_QUESTION"; then
   claude_ok=false
 fi
 
-if ! run_test "Claude Code" "coding-task skill" "yes" "$SCRATCH_DIR/claude_skill.txt" \
+if ! run_test "Claude Code" "coding-task skill" "discover" "$SCRATCH_DIR/claude_skill.txt" \
   claude -p --no-session-persistence "$SKILL_QUESTION"; then
   claude_ok=false
 fi
@@ -65,12 +65,12 @@ echo ""
 echo "Codex CLI:"
 codex_ok=true
 
-if ! run_test "Codex CLI" "AGENTS.md loaded" "steven" "$SCRATCH_DIR/codex_agents.txt" \
+if ! run_test "Codex CLI" "AGENTS.md loaded" "help" "$SCRATCH_DIR/codex_agents.txt" \
   codex exec --skip-git-repo-check "$AGENTS_QUESTION"; then
   codex_ok=false
 fi
 
-if ! run_test "Codex CLI" "coding-task skill" "yes" "$SCRATCH_DIR/codex_skill.txt" \
+if ! run_test "Codex CLI" "coding-task skill" "discover" "$SCRATCH_DIR/codex_skill.txt" \
   codex exec --skip-git-repo-check "$SKILL_QUESTION"; then
   codex_ok=false
 fi
@@ -82,12 +82,12 @@ echo ""
 echo "Cursor CLI:"
 cursor_ok=true
 
-if ! run_test "Cursor CLI" "AGENTS.md loaded" "steven" "$SCRATCH_DIR/cursor_agents.txt" \
+if ! run_test "Cursor CLI" "AGENTS.md loaded" "help" "$SCRATCH_DIR/cursor_agents.txt" \
   cursor agent -p "$AGENTS_QUESTION"; then
   cursor_ok=false
 fi
 
-if ! run_test "Cursor CLI" "coding-task skill" "yes" "$SCRATCH_DIR/cursor_skill.txt" \
+if ! run_test "Cursor CLI" "coding-task skill" "discover" "$SCRATCH_DIR/cursor_skill.txt" \
   cursor agent -p "$SKILL_QUESTION"; then
   cursor_ok=false
 fi
