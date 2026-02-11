@@ -14,7 +14,7 @@ Creates a new git repo in the preferred worktree directory structure and pushes 
 Based on $ARGUMENTS, run the script:
 
 ```bash
-./scripts/init-repo.sh $ARGUMENTS
+~/.claude/skills/init-repo/scripts/init-repo.sh $ARGUMENTS
 ```
 
 ### Arguments

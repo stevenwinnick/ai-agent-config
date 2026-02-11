@@ -16,5 +16,5 @@ cursor $FILENAME
 All files on the current branch which do not match the default branch can be opened with the helper script
 
 ```bash
-./scripts/open-modified-files.sh
+~/.claude/skills/open-modified-files/scripts/open-modified-files.sh
 ```
