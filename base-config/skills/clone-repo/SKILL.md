@@ -14,7 +14,7 @@ Clones a GitHub repo directly into the preferred worktree directory structure.
 Based on $ARGUMENTS, run the script:
 
 ```bash
-./scripts/clone-repo.sh $ARGUMENTS
+~/.claude/skills/clone-repo/scripts/clone-repo.sh $ARGUMENTS
 ```
 
 ### Arguments

@@ -14,7 +14,7 @@ Converts an existing standard-format git repo (a normal clone) into the preferre
 Based on $ARGUMENTS, run the script:
 
 ```bash
-./scripts/convert-repo.sh $ARGUMENTS
+~/.claude/skills/convert-repo/scripts/convert-repo.sh $ARGUMENTS
 ```
 
 ### Arguments
