@@ -1,6 +1,6 @@
 #!/bin/bash
 # Functional test for AI coding agent configurations
-# Runs each agent in headless mode to validate that it can see the global user config and the explore-and-discover skill
+# Runs each agent in headless mode to validate that it can see the global user config and the exploring-and-discovering skill
 
 TIMEOUT=120
 
@@ -77,7 +77,7 @@ if ! run_test "Claude Code" "global user config loaded" "help" \
   claude_ok=false
 fi
 
-if ! run_test "Claude Code" "explore-and-discover skill" "discover" \
+if ! run_test "Claude Code" "exploring-and-discovering skill" "discover" \
   claude -p --no-session-persistence "$SKILL_QUESTION"; then
   claude_ok=false
 fi
@@ -93,7 +93,7 @@ if ! run_test "Codex CLI" "global user config loaded" "help" \
   codex_ok=false
 fi
 
-if ! run_test "Codex CLI" "explore-and-discover skill" "discover" \
+if ! run_test "Codex CLI" "exploring-and-discovering skill" "discover" \
   codex exec --skip-git-repo-check "$SKILL_QUESTION"; then
   codex_ok=false
 fi
@@ -109,7 +109,7 @@ if ! run_test "Cursor CLI" "global user config loaded" "help" \
   cursor_ok=false
 fi
 
-if ! run_test "Cursor CLI" "explore-and-discover skill" "discover" \
+if ! run_test "Cursor CLI" "exploring-and-discovering skill" "discover" \
   cursor agent -p "$SKILL_QUESTION"; then
   cursor_ok=false
 fi
