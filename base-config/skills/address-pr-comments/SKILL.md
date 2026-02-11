@@ -98,7 +98,7 @@ For each comment to be addressed:
 1. Read the relevant file and surrounding context using the `explore-and-discover` skill if the context from the diff hunk is insufficient
 2. Understand what the reviewer is requesting
 3. Address the comment — this may involve code changes (following the `code-standards` skill), documentation updates, configuration changes, or any other appropriate action
-4. Reply on GitHub indicating what was done and which AI agent/tool made the change:
+4. Reply on GitHub indicating what was done and which AI agent/tool made the change. Keep replies concise — don't restate information from the reviewer's comment or other replies in the thread:
 
 For line-level comments, reply to the comment thread:
 
@@ -120,6 +120,17 @@ Addressing feedback from @{username}:
 ```
 
 If a comment is unclear or you're unsure how to address it, skip it and flag it to the user rather than guessing.
+
+For simple/trivial comments that have been fully addressed (e.g., "remove this string", "rename this variable"), reply and then resolve the thread via the GraphQL API:
+
+```bash
+# Get the thread node ID
+gh api graphql -f query='{ repository(owner: "<owner>", name: "<repo>") { pullRequest(number: <pr_number>) { reviewThreads(first: 100) { nodes { id comments(first: 1) { nodes { databaseId } } } } } } }' \
+  --jq '.data.repository.pullRequest.reviewThreads.nodes[] | select(.comments.nodes[0].databaseId == <comment_id>) | .id'
+
+# Resolve it
+gh api graphql -f query='mutation { resolveReviewThread(input: { threadId: "<thread_node_id>" }) { thread { isResolved } } }'
+```
 
 ## Step 4: Push and Update
 
