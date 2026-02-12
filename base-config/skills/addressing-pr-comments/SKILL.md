@@ -1,6 +1,6 @@
 ---
 name: addressing-pr-comments
-description: Addresses review comments on a pull request, resolving all unresolved comments or specific ones. Use when the user wants to address, fix, or respond to PR review feedback.
+description: Addresses feedback on a pull request. Use when the user wants to address, fix, or respond to PR comments.
 argument-hint: [pr-url-or-number] | [comment-url-or-number ...]
 ---
 
@@ -23,9 +23,9 @@ Arguments ($ARGUMENTS) can be:
 
 - **Nothing** — use the current branch's PR
 - **A PR URL or number** — address all unresolved comments on that PR
-- **One or more comment URLs or numbers** — address only those specific comments
+- **One or more comment URLs** — address only those specific comments
 
-Determine which case applies by inspecting the arguments. PR URLs contain `/pull/` while comment URLs contain `/discussion_r` or `#discussion_r`. A bare number is ambiguous — treat it as a PR number if it's the only argument, or as comment IDs if there are multiple.
+Determine which case applies by inspecting the arguments. PR URLs contain `/pull/` while comment URLs contain `/discussion_r` or `#discussion_r`. A bare number refers to a PR number.
 
 To identify the PR:
 
@@ -108,7 +108,7 @@ For each comment to be addressed:
 
 1. Read the relevant file and surrounding context using the `exploring-and-discovering` skill if the context from the diff hunk is insufficient
 2. Understand what the reviewer is requesting
-3. Address the comment — this may involve code changes (following the `applying-code-standards` skill), documentation updates, configuration changes, or any other appropriate action
+3. Address the comment — this may involve code changes (following the `editing-files` skill), documentation updates, configuration changes, or any other appropriate action
 4. Reply on GitHub indicating what was done and which AI agent/tool made the change:
 
 For line-level comments, reply to the comment thread:
