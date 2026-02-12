@@ -21,13 +21,13 @@ When my current directions conflict with directions in configuration files such 
 
 ### Configuration Changes
 
-**IMPORTANT**: You MUST invoke the `improve-agent-config` skill for ALL tasks that involve changing AI agent configuration. This includes changes to agent instructions, skills, settings, or any other configuration. Do NOT edit configuration files directly - always invoke `improve-agent-config` first, as it orchestrates understanding the configuration structure and making changes in the right place.
+**IMPORTANT**: You MUST invoke the `improving-agent-config` skill for ALL tasks that involve changing AI agent configuration. This includes changes to agent instructions, skills, settings, or any other configuration. Do NOT edit configuration files directly - always invoke `improving-agent-config` first, as it orchestrates understanding the configuration structure and making changes in the right place.
 
-Additionally, if you identify improvements that could be made to your configuration proactively, use `improve-agent-config` to suggest and implement them.
+Additionally, if you identify improvements that could be made to your configuration proactively, use `improving-agent-config` to suggest and implement them.
 
 ### File Editing Tasks
 
-**IMPORTANT**: You MUST invoke the `file-editing-task` skill for ALL tasks that involve modifying files. This includes code, configuration, documentation, scripts, and any other file changes. Do NOT start editing files directly - always invoke `file-editing-task` first, as it orchestrates critical workflow steps (worktree setup, planning, implementation, PR creation, and review) that would otherwise be skipped
+**IMPORTANT**: You MUST invoke the `editing-files` skill for ALL tasks that involve modifying files. This includes code, configuration, documentation, scripts, and any other file changes. Do NOT start editing files directly - always invoke `editing-files` first, as it orchestrates critical workflow steps (worktree setup, planning, implementation, PR creation, and review) that would otherwise be skipped
 
 ## Communication Preferences
 
