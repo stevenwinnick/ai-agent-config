@@ -1,7 +1,7 @@
 ---
 name: addressing-pr-comments
 description: Addresses feedback on a pull request. Use when the user wants to address, fix, or respond to PR comments.
-argument-hint: [pr-url-or-number] | [comment-url-or-number ...]
+argument-hint: "[pr-url-or-number] | [comment-url-or-number ...]"
 ---
 
 # Address PR Comments
