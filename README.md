@@ -45,11 +45,11 @@ This repo maintains a single source of truth for machine-wide AI agent configura
 
 #### When to Test
 
-Always run tests before pushing modifications to this repo.
+Always run tests before proposing modifications to this repo (e.g., before creating or updating a pull request).
 
 #### Validation Scripts
 
-Run the test script to validate that all agents can see AGENTS.md and the `coding-task` skill:
+Run the test script to validate that all agents can see AGENTS.md and the `exploring-and-discovering` skill:
 
 ```bash
 ./scripts/test-configs.sh
@@ -62,6 +62,18 @@ Or update configs and test in one step:
 ```
 
 These scripts run each agent (Claude Code, Codex CLI, Cursor CLI) in headless mode with probe questions to confirm that AGENTS.md is loaded and the `exploring-and-discovering` skill is accessible.
+
+The configure scripts derive paths from their own location, so you can test changes from a branch worktree by running the scripts from that worktree's path:
+
+```bash
+# Test from a branch worktree
+<branch-worktree>/scripts/update-and-test-configs.sh
+
+# After testing, restore trunk config
+./scripts/apply-updated-trunk-config.sh
+```
+
+You must also run `apply-updated-trunk-config.sh` after merging changes to trunk to apply the latest configuration.
 
 #### Manual Testing
 
