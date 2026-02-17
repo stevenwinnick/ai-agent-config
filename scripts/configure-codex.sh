@@ -5,7 +5,7 @@
 
 set -e
 
-BASE_CONFIG_DIR="$HOME/.ai-agent-config/base-config"
+BASE_CONFIG_DIR="$(cd "$(dirname "$0")/../base-config" && pwd)"
 CODEX_HOME="${CODEX_HOME:-$HOME/.codex}"
 
 echo "Configuring Codex CLI..."
