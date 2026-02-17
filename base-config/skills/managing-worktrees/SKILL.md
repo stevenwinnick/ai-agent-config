@@ -1,7 +1,7 @@
 ---
 name: managing-worktrees
 description: Manages git worktrees - creates, lists, cleans up, or switches between them. Use when working with multiple branches simultaneously or managing worktree structure.
-argument-hint: "[create <branch-name>] | [list] | [remove <branch-name>] | [clean-all] | [switch <name>]"
+argument-hint: "<repo-dir> [create <branch-name>] | [list] | [remove <branch-name>] | [clean-all] | [switch <name>]"
 ---
 
 # Worktree Management
@@ -32,7 +32,7 @@ All commands take `<repo-dir>` as their first argument — the path to any direc
 
 Based on $ARGUMENTS, run the appropriate command:
 
-### create <branch-name>
+### create <repo-dir> <branch-name>
 
 ```bash
 ~/.claude/skills/managing-worktrees/scripts/create.sh "<repo-dir>" "<branch-name>"
@@ -49,7 +49,7 @@ In Datadog repos (remote origin contains `DataDog` or `datadog`):
 In all other repos:
 - `steven/<short-kebab-case-name>`
 
-### list
+### list <repo-dir>
 
 ```bash
 ~/.claude/skills/managing-worktrees/scripts/list.sh "<repo-dir>"
@@ -57,7 +57,7 @@ In all other repos:
 
 Lists all active worktrees and shows the status of each
 
-### remove <branch-name>
+### remove <repo-dir> <branch-name>
 
 ```bash
 ~/.claude/skills/managing-worktrees/scripts/remove.sh "<repo-dir>" "<branch-name>"
@@ -65,7 +65,7 @@ Lists all active worktrees and shows the status of each
 
 Removes the worktree for the specified branch. Also deletes the local branch.
 
-### clean-all
+### clean-all <repo-dir>
 
 ```bash
 ~/.claude/skills/managing-worktrees/scripts/clean-all.sh "<repo-dir>"
@@ -73,7 +73,7 @@ Removes the worktree for the specified branch. Also deletes the local branch.
 
 Prunes stale worktree references and checks for branches which don't exist on remote. Will remove branches which have never been pushed to remote, so be careful not to run it before pushing branches.
 
-### switch <name>
+### switch <repo-dir> <name>
 
 ```bash
 ~/.claude/skills/managing-worktrees/scripts/switch.sh "<repo-dir>" "<name>"
