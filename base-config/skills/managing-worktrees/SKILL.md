@@ -28,12 +28,14 @@ Branch names have slashes replaced with `--` in the directory name.
 
 ## Commands
 
+All commands take `<repo-dir>` as their first argument — the path to any directory inside the target git repository. This ensures scripts work regardless of the agent's current working directory.
+
 Based on $ARGUMENTS, run the appropriate command:
 
 ### create <branch-name>
 
 ```bash
-~/.claude/skills/managing-worktrees/scripts/create.sh "<branch-name>"
+~/.claude/skills/managing-worktrees/scripts/create.sh "<repo-dir>" "<branch-name>"
 ```
 
 Creates a new worktree with the specified branch name. Inform the user of the new worktree location.
@@ -50,7 +52,7 @@ In all other repos:
 ### list
 
 ```bash
-~/.claude/skills/managing-worktrees/scripts/list.sh
+~/.claude/skills/managing-worktrees/scripts/list.sh "<repo-dir>"
 ```
 
 Lists all active worktrees and shows the status of each
@@ -58,7 +60,7 @@ Lists all active worktrees and shows the status of each
 ### remove <branch-name>
 
 ```bash
-~/.claude/skills/managing-worktrees/scripts/remove.sh "<branch-name>"
+~/.claude/skills/managing-worktrees/scripts/remove.sh "<repo-dir>" "<branch-name>"
 ```
 
 Removes the worktree for the specified branch. Also deletes the local branch.
@@ -66,7 +68,7 @@ Removes the worktree for the specified branch. Also deletes the local branch.
 ### clean-all
 
 ```bash
-~/.claude/skills/managing-worktrees/scripts/clean-all.sh
+~/.claude/skills/managing-worktrees/scripts/clean-all.sh "<repo-dir>"
 ```
 
 Prunes stale worktree references and checks for branches which don't exist on remote. Will remove branches which have never been pushed to remote, so be careful not to run it before pushing branches.
@@ -74,7 +76,7 @@ Prunes stale worktree references and checks for branches which don't exist on re
 ### switch <name>
 
 ```bash
-~/.claude/skills/managing-worktrees/scripts/switch.sh "<name>"
+~/.claude/skills/managing-worktrees/scripts/switch.sh "<repo-dir>" "<name>"
 ```
 
 Switches to a specific worktree

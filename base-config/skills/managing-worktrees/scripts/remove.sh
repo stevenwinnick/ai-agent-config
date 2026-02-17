@@ -1,16 +1,19 @@
 #!/bin/bash
 # Remove a specific worktree by branch name
 #
-# Usage: ./remove.sh <branch-name>
+# Usage: ./remove.sh <repo-dir> <branch-name>
 
 set -e
 
-if [[ -z "$1" ]]; then
-    echo "Usage: ./remove.sh <branch-name>"
+REPO_DIR="$1"
+branch_name="$2"
+
+if [[ -z "$REPO_DIR" || -z "$branch_name" ]]; then
+    echo "Usage: ./remove.sh <repo-dir> <branch-name>"
     exit 1
 fi
 
-branch_name="$1"
+cd "$REPO_DIR"
 
 # Convert branch slashes to -- for filesystem-safe directory name (matching create.sh)
 worktree_dir=$(echo "$branch_name" | sed 's|/|--|g')
