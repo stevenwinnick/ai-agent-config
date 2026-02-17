@@ -1,7 +1,7 @@
 ---
 name: managing-worktrees
 description: Manages git worktrees - creates, lists, cleans up, or switches between them. Use when working with multiple branches simultaneously or managing worktree structure.
-argument-hint: "[create <branch-name>] | [list] | [remove <branch-name>] | [clean-all] | [switch <name>]"
+argument-hint: "<repo-dir> [create <branch-name>] | [list] | [remove <branch-name>] | [clean-all] | [switch <name>]"
 ---
 
 # Worktree Management
@@ -28,12 +28,14 @@ Branch names have slashes replaced with `--` in the directory name.
 
 ## Commands
 
+All commands take `<repo-dir>` as their first argument — the path to any directory inside the target git repository. This ensures scripts work regardless of the agent's current working directory.
+
 Based on $ARGUMENTS, run the appropriate command:
 
-### create <branch-name>
+### create <repo-dir> <branch-name>
 
 ```bash
-~/.claude/skills/managing-worktrees/scripts/create.sh "<branch-name>"
+~/.claude/skills/managing-worktrees/scripts/create.sh "<repo-dir>" "<branch-name>"
 ```
 
 Creates a new worktree with the specified branch name. Inform the user of the new worktree location.
@@ -47,34 +49,34 @@ In Datadog repos (remote origin contains `DataDog` or `datadog`):
 In all other repos:
 - `steven/<short-kebab-case-name>`
 
-### list
+### list <repo-dir>
 
 ```bash
-~/.claude/skills/managing-worktrees/scripts/list.sh
+~/.claude/skills/managing-worktrees/scripts/list.sh "<repo-dir>"
 ```
 
 Lists all active worktrees and shows the status of each
 
-### remove <branch-name>
+### remove <repo-dir> <branch-name>
 
 ```bash
-~/.claude/skills/managing-worktrees/scripts/remove.sh "<branch-name>"
+~/.claude/skills/managing-worktrees/scripts/remove.sh "<repo-dir>" "<branch-name>"
 ```
 
 Removes the worktree for the specified branch. Also deletes the local branch.
 
-### clean-all
+### clean-all <repo-dir>
 
 ```bash
-~/.claude/skills/managing-worktrees/scripts/clean-all.sh
+~/.claude/skills/managing-worktrees/scripts/clean-all.sh "<repo-dir>"
 ```
 
 Prunes stale worktree references and checks for branches which don't exist on remote. Will remove branches which have never been pushed to remote, so be careful not to run it before pushing branches.
 
-### switch <name>
+### switch <repo-dir> <name>
 
 ```bash
-~/.claude/skills/managing-worktrees/scripts/switch.sh "<name>"
+~/.claude/skills/managing-worktrees/scripts/switch.sh "<repo-dir>" "<name>"
 ```
 
 Switches to a specific worktree

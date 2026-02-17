@@ -1,7 +1,17 @@
 #!/bin/bash
 # List all git worktrees and their status
+# Usage: list.sh <repo-dir>
 
 set -e
+
+REPO_DIR="$1"
+
+if [[ -z "$REPO_DIR" ]]; then
+    echo "Usage: list.sh <repo-dir>"
+    exit 1
+fi
+
+cd "$REPO_DIR"
 
 git worktree list
 

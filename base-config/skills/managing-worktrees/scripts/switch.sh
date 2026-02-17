@@ -1,15 +1,18 @@
 #!/bin/bash
 # Switch to a specific worktree
-# Usage: switch.sh <worktree-name>
+# Usage: switch.sh <repo-dir> <worktree-name>
 
 set -e
 
-NAME="$1"
+REPO_DIR="$1"
+NAME="$2"
 
-if [[ -z "$NAME" ]]; then
-    echo "Usage: switch.sh <worktree-name>"
+if [[ -z "$REPO_DIR" || -z "$NAME" ]]; then
+    echo "Usage: switch.sh <repo-dir> <worktree-name>"
     exit 1
 fi
+
+cd "$REPO_DIR"
 
 if [[ -z "$CODE_ROOT" ]]; then
     echo "Error: CODE_ROOT environment variable is not set"

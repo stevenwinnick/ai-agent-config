@@ -4,8 +4,19 @@
 # Stale worktrees are entries where:
 # - The worktree directory was manually deleted but git still tracks it
 # - The worktree references a branch that does not exist on the remote
+#
+# Usage: ./clean-all.sh <repo-dir>
 
 set -e
+
+REPO_DIR="$1"
+
+if [[ -z "$REPO_DIR" ]]; then
+    echo "Usage: ./clean-all.sh <repo-dir>"
+    exit 1
+fi
+
+cd "$REPO_DIR"
 
 # Remove stale worktree entries (directories deleted but still tracked by git)
 git worktree prune

@@ -1,15 +1,18 @@
 #!/bin/bash
 # Create a new git worktree
-# Usage: create.sh <branch-name>
+# Usage: create.sh <repo-dir> <branch-name>
 
 set -e
 
-BRANCH_NAME="$1"
+REPO_DIR="$1"
+BRANCH_NAME="$2"
 
-if [[ -z "$BRANCH_NAME" ]]; then
-    echo "Usage: create.sh <branch-name>"
+if [[ -z "$REPO_DIR" || -z "$BRANCH_NAME" ]]; then
+    echo "Usage: create.sh <repo-dir> <branch-name>"
     exit 1
 fi
+
+cd "$REPO_DIR"
 
 if [[ -z "$CODE_ROOT" ]]; then
     echo "Error: CODE_ROOT environment variable is not set"
