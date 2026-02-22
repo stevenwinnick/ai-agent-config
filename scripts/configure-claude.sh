@@ -4,7 +4,8 @@
 
 set -e
 
-BASE_CONFIG_DIR="$(cd "$(dirname "$0")/../base-config" && pwd)"
+"$(dirname "$0")/configure-ai-agent-config-home.sh"
+BASE_CONFIG_DIR="$HOME/.ai-agent-config/base-config"
 
 echo "Configuring Claude Code..."
 

@@ -1,12 +1,13 @@
 #!/bin/bash
 # Configure Codex CLI
-# Codex loads team config (including skills) from CODEX_HOME (defaults to ~/.codex)
+# Codex loads team config (including skills) from ~/.codex
 # Personal instructions live in AGENTS.md
 
 set -e
 
-BASE_CONFIG_DIR="$(cd "$(dirname "$0")/../base-config" && pwd)"
-CODEX_HOME="${CODEX_HOME:-$HOME/.codex}"
+"$(dirname "$0")/configure-ai-agent-config-home.sh"
+BASE_CONFIG_DIR="$HOME/.ai-agent-config/base-config"
+CODEX_HOME="$HOME/.codex"
 
 echo "Configuring Codex CLI..."
 
