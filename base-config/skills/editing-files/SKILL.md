@@ -8,21 +8,6 @@ argument-hint: [description]
 
 You are starting a new task that involves editing files. Follow this workflow precisely.
 
-## Required Skill Loading
-
-Before performing each workflow step, you MUST load any referenced skill by opening its `SKILL.md` and following that skill's instructions for the step.
-
-At minimum, this workflow can require loading:
-- `reading-jira-tickets` (Step 1 when a Jira ticket is present)
-- `managing-worktrees` (Step 2)
-- `exploring-and-discovering` (Step 3)
-- `creating-plans` (Step 4, if needed)
-- `applying-code-standards` (Step 5)
-- `creating-draft-prs` or `updating-pull-requests` (Step 6)
-- `opening-modified-files` (Step 7)
-
-If any loaded skill references additional skills (for example `creating-draft-prs` referencing `generating-pr-body`), you MUST load those dependent skills before executing that part of the workflow.
-
 Copy this checklist and track progress:
 
 ```
