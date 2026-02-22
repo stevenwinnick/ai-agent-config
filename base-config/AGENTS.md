@@ -29,6 +29,10 @@ Additionally, if you identify improvements that could be made to your configurat
 
 **IMPORTANT**: You MUST invoke the `editing-files` skill for ALL tasks that involve modifying files. This includes code, configuration, documentation, scripts, and any other file changes. Do NOT start editing files directly - always invoke `editing-files` first, as it orchestrates critical workflow steps (worktree setup, planning, implementation, PR creation, and review) that would otherwise be skipped
 
+### Skill Loading
+
+**IMPORTANT**: When using a skill, if the skill directs you to use another skill, you MUST load the referenced skill by reading its `SKILL.md` file, then use the skill
+
 ## Communication Preferences
 
 - I typically communicate candidly and straightforwardly and you should do the same
