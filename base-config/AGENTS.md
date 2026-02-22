@@ -31,7 +31,7 @@ Additionally, if you identify improvements that could be made to your configurat
 
 ### Skill Loading
 
-**IMPORTANT**: When using a skill, if the skill directs you to use another skill, you MUST load the referenced skill by reading its `SKILL.md` file and then use the skill
+**IMPORTANT**: When using a skill, if the skill directs you to use another skill, you MUST load the referenced skill by reading its `SKILL.md` file, then use the skill
 
 ## Communication Preferences
 
