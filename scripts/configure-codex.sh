@@ -1,25 +1,13 @@
 #!/bin/bash
 # Configure Codex CLI
-# Codex loads team config (including skills) from CODEX_HOME (defaults to ~/.codex)
+# Codex loads team config (including skills) from ~/.codex
 # Personal instructions live in AGENTS.md
 
 set -e
 
-REPO_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-AI_AGENT_CONFIG_HOME="${AI_AGENT_CONFIG_HOME:-$HOME/.ai-agent-config}"
-
-if [ -e "$AI_AGENT_CONFIG_HOME" ] && [ ! -L "$AI_AGENT_CONFIG_HOME" ]; then
-  echo "Error: $AI_AGENT_CONFIG_HOME exists and is not a symlink." >&2
-  echo "Move it aside or set AI_AGENT_CONFIG_HOME to a symlink path." >&2
-  exit 1
-fi
-
-# Keep a stable path so generated symlinks don't point at transient worktrees.
-rm -f "$AI_AGENT_CONFIG_HOME"
-ln -s "$REPO_DIR" "$AI_AGENT_CONFIG_HOME"
-
-BASE_CONFIG_DIR="$AI_AGENT_CONFIG_HOME/base-config"
-CODEX_HOME="${CODEX_HOME:-$HOME/.codex}"
+"$(dirname "$0")/configure-ai-agent-config-home.sh"
+BASE_CONFIG_DIR="$HOME/.ai-agent-config/base-config"
+CODEX_HOME="$HOME/.codex"
 
 echo "Configuring Codex CLI..."
 
