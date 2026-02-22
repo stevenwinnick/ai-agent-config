@@ -63,7 +63,7 @@ Or update configs and test in one step:
 
 These scripts run each agent (Claude Code, Codex CLI, Cursor CLI) in headless mode with probe questions to confirm that AGENTS.md is loaded and the `exploring-and-discovering` skill is accessible.
 
-The configure scripts derive paths from their own location, so you can test changes from a branch worktree by running the scripts from that worktree's path:
+The configure scripts always route through `~/.ai-agent-config` and will update that symlink to the repo checkout where the script is run. This keeps downstream symlinks stable while still letting you test changes from a branch worktree:
 
 ```bash
 # Test from a branch worktree
