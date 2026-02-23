@@ -3,7 +3,7 @@
 
 set -e
 
-REPO_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+REPO_DIR="$(cd "$(dirname "$0")/.." && pwd -P)"
 AI_AGENT_CONFIG_HOME="$HOME/.ai-agent-config"
 
 if [ -e "$AI_AGENT_CONFIG_HOME" ] && [ ! -L "$AI_AGENT_CONFIG_HOME" ]; then
