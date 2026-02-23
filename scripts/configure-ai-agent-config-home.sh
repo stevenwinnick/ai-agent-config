@@ -12,6 +12,11 @@ if [ -e "$AI_AGENT_CONFIG_HOME" ] && [ ! -L "$AI_AGENT_CONFIG_HOME" ]; then
   exit 1
 fi
 
+# Skip if already pointing to the right place.
+if [ -L "$AI_AGENT_CONFIG_HOME" ] && [ "$(readlink "$AI_AGENT_CONFIG_HOME")" = "$REPO_DIR" ]; then
+  exit 0
+fi
+
 # Keep a stable path so generated symlinks don't point at transient worktrees.
 rm -f "$AI_AGENT_CONFIG_HOME"
 ln -s "$REPO_DIR" "$AI_AGENT_CONFIG_HOME"
