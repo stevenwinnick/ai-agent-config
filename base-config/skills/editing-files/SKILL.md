@@ -18,9 +18,8 @@ Task Progress:
 - [ ] Step 4: Create a plan (if needed)
 - [ ] Step 5: Implement
 - [ ] Step 6: Create or update pull request
-- [ ] Step 7: Open files for review
-- [ ] Step 8: Present summary
-- [ ] Step 9: Iterate on feedback
+- [ ] Step 7: Present summary
+- [ ] Step 8: Iterate on feedback
 ```
 
 ## Step 1: Parse the Request
@@ -49,11 +48,7 @@ Implement the desired task, using the code standards from the `applying-code-sta
 
 If a pull request has not yet been created, use the `creating-draft-prs` skill to create a pull request. If a pull request has already been created, use the `updating-pull-requests` skill to update it.
 
-## Step 7: Open Files for Review
-
-Use the `opening-modified-files` skill to open all changed files in Cursor for the user to review
-
-## Step 8: Present Summary
+## Step 7: Present Summary
 
 Present to the user a summary of the changes which have been made since the last summary in the following format:
 
@@ -63,6 +58,6 @@ Details: <more detailed description of the changes and why they were made>
 (if applicable) Suggested Next Steps: <list of suggested follow-up work and why it is suggested>
 Pull request: <link to the pull request>
 
-## Step 9: Iterate
+## Step 8: Iterate
 
 If the user requests further changes, return to step 3 and continue from there
