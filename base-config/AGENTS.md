@@ -33,6 +33,17 @@ Additionally, if you identify improvements that could be made to your configurat
 
 **IMPORTANT**: When using a skill, if the skill directs you to use another skill, you MUST load the referenced skill by reading its `SKILL.md` file, then use the skill
 
+### Repo Context Discovery
+
+I typically initialize agents from `$CODE_ROOT`, outside any specific repo
+
+When you are asked to work in a repo from that starting point:
+1. Identify the target repo and enter it before doing repo-specific work
+2. Explore the repo's local steering files yourself before acting
+3. Prioritize files such as `AGENTS.md`, relevant `README.md` files, and repo-local skills or instructions
+4. Treat those repo-local instructions as additional context alongside this global config, while still following higher-priority current directions
+5. If the repo context is still unclear, keep exploring rather than assuming
+
 ## Communication Preferences
 
 - I typically communicate candidly and straightforwardly and you should do the same
