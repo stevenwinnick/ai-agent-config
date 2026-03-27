@@ -115,8 +115,6 @@ Each tool has its own configuration script with custom output generation and sym
 
 The `CODE_ROOT` environment variable is expected to be be set to the root directory for all repos.
 
-Agents are often initialized from `$CODE_ROOT` instead of from inside a specific repo. That means repo-local steering files are not guaranteed to be loaded automatically, so agents should explore the target repo's `AGENTS.md`, relevant `README.md` files, and other local instructions themselves before starting repo-specific work.
-
 Example (add to your shell config using the `custom-shell-setup` skill):
 ```bash
 export CODE_ROOT="$HOME"
