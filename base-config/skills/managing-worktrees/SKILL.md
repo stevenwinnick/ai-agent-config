@@ -1,7 +1,7 @@
 ---
 name: managing-worktrees
-description: Manages git worktrees - creates, lists, cleans up, or switches between them. Use when working with multiple branches simultaneously or managing worktree structure.
-argument-hint: "<repo-dir> [create <branch-name>] | [list] | [remove <branch-name>] | [clean-all] | [switch <name>]"
+description: Manages git worktrees - creates, lists, cleans up, or resolves paths to them. Use when working with multiple branches simultaneously or managing worktree structure.
+argument-hint: "<repo-dir> [create <branch-name>] | [list] | [remove <branch-name>] | [clean-all] | [path <name>]"
 ---
 
 # Worktree Management
@@ -32,15 +32,21 @@ All commands take `<repo-dir>` as their first argument — the path to any direc
 
 Use the `shw` CLI for all worktree operations. If `shw` is missing, misconfigured, or returns unexpected output, use the `debugging-shw-cli` skill before continuing.
 
+For agent workflows:
+
+- Prefer `create --quiet` when you need the new worktree path as machine-readable output
+- Prefer `path` when you need to resolve an existing worktree to a `workdir`
+- Avoid `clean-all` unless cleanup is the explicit task, because it can remove local branches without remote-tracking refs
+
 Based on $ARGUMENTS, run the appropriate command:
 
 ### create <repo-dir> <branch-name>
 
 ```bash
-shw git worktree create "<repo-dir>" "<branch-name>"
+shw git worktree create --quiet "<repo-dir>" "<branch-name>"
 ```
 
-Creates a new worktree with the specified branch name. Inform the user of the new worktree location.
+Creates a new worktree with the specified branch name and prints only the created path.
 
 **Branch Naming Convention:**
 
@@ -75,10 +81,10 @@ shw git worktree clean-all "<repo-dir>"
 
 Prunes stale worktree references and checks for branches which don't exist on remote. Will remove branches which have never been pushed to remote, so be careful not to run it before pushing branches.
 
-### switch <repo-dir> <name>
+### path <repo-dir> <name>
 
 ```bash
-shw git worktree switch "<repo-dir>" "<name>"
+shw git worktree path "<repo-dir>" "<name>"
 ```
 
 Prints the path to a specific worktree
@@ -88,5 +94,5 @@ Use the returned path as the working directory for subsequent commands, or in a 
 ```bash
 REPO_DIR="<repo-dir>"
 NAME="<name>"
-cd "$(shw git worktree switch "$REPO_DIR" "$NAME")"
+cd "$(shw git worktree path "$REPO_DIR" "$NAME")"
 ```

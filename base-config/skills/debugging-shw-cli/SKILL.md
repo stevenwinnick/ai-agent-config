@@ -25,6 +25,7 @@ When the issue involves worktrees, verify the repo layout and the specific comma
 
 ```bash
 shw git worktree list "<repo-dir>"
+shw git worktree path "<repo-dir>" "<name>"
 ```
 
 If needed, rerun the failing worktree command with the exact arguments the user or calling skill used.
