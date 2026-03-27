@@ -28,14 +28,16 @@ Branch names have slashes replaced with `--` in the directory name.
 
 ## Commands
 
-All commands take `<repo-dir>` as their first argument — the path to any directory inside the target git repository. This ensures scripts work regardless of the agent's current working directory.
+All commands take `<repo-dir>` as their first argument — the path to any directory inside the target git repository. This ensures commands work regardless of the agent's current working directory.
+
+Use the `shw` CLI for all worktree operations. If `shw` is missing, misconfigured, or returns unexpected output, use the `debugging-shw-cli` skill before continuing.
 
 Based on $ARGUMENTS, run the appropriate command:
 
 ### create <repo-dir> <branch-name>
 
 ```bash
-~/.claude/skills/managing-worktrees/scripts/create.sh "<repo-dir>" "<branch-name>"
+shw git worktree create "<repo-dir>" "<branch-name>"
 ```
 
 Creates a new worktree with the specified branch name. Inform the user of the new worktree location.
@@ -52,7 +54,7 @@ In all other repos:
 ### list <repo-dir>
 
 ```bash
-~/.claude/skills/managing-worktrees/scripts/list.sh "<repo-dir>"
+shw git worktree list "<repo-dir>"
 ```
 
 Lists all active worktrees and shows the status of each
@@ -60,7 +62,7 @@ Lists all active worktrees and shows the status of each
 ### remove <repo-dir> <branch-name>
 
 ```bash
-~/.claude/skills/managing-worktrees/scripts/remove.sh "<repo-dir>" "<branch-name>"
+shw git worktree remove "<repo-dir>" "<branch-name>"
 ```
 
 Removes the worktree for the specified branch. Also deletes the local branch.
@@ -68,7 +70,7 @@ Removes the worktree for the specified branch. Also deletes the local branch.
 ### clean-all <repo-dir>
 
 ```bash
-~/.claude/skills/managing-worktrees/scripts/clean-all.sh "<repo-dir>"
+shw git worktree clean-all "<repo-dir>"
 ```
 
 Prunes stale worktree references and checks for branches which don't exist on remote. Will remove branches which have never been pushed to remote, so be careful not to run it before pushing branches.
@@ -76,7 +78,15 @@ Prunes stale worktree references and checks for branches which don't exist on re
 ### switch <repo-dir> <name>
 
 ```bash
-~/.claude/skills/managing-worktrees/scripts/switch.sh "<repo-dir>" "<name>"
+shw git worktree switch "<repo-dir>" "<name>"
 ```
 
-Switches to a specific worktree
+Prints the path to a specific worktree
+
+Use the returned path as the working directory for subsequent commands, or in a shell command such as:
+
+```bash
+REPO_DIR="<repo-dir>"
+NAME="<name>"
+cd "$(shw git worktree switch "$REPO_DIR" "$NAME")"
+```
