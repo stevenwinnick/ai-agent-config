@@ -35,14 +35,9 @@ Additionally, if you identify improvements that could be made to your configurat
 
 ### Repo Context Discovery
 
-I typically initialize agents from `$CODE_ROOT`, outside any specific repo
+I typically initialize agents from `$CODE_ROOT`, outside of any specific repo. Agents which only automatically load context from steering files (`AGENTS.md`, `README`, skills, etc.) thus miss out on that context. 
 
-When you are asked to work in a repo from that starting point:
-1. Identify the target repo and enter it before doing repo-specific work
-2. Explore the repo's local steering files yourself before acting
-3. Prioritize files such as `AGENTS.md`, relevant `README.md` files, and repo-local skills or instructions
-4. Treat those repo-local instructions as additional context alongside this global config, while still following higher-priority current directions
-5. If the repo context is still unclear, keep exploring rather than assuming
+**IMPORTANT**: When working in a repo outside your starting point, you MUST explore the repo's local steering files yourself before acting
 
 ## Communication Preferences
 
