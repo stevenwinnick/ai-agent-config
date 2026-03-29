@@ -28,7 +28,7 @@ Branch names have slashes replaced with `--` in the directory name.
 
 ## Commands
 
-All commands take `<repo-dir>` as their first argument — the path to any directory inside the target git repository. This ensures commands work regardless of the agent's current working directory.
+All commands take `<repo-dir>` as their first argument — either the path to any directory inside the target git repository, or the repo container directory that contains the default-branch folder and `worktrees/`. This ensures commands work regardless of the agent's current working directory.
 
 Use the `shw` CLI for all worktree operations. If `shw` is missing, misconfigured, or returns unexpected output, use the `debugging-shw-cli` skill before continuing.
 
