@@ -73,6 +73,8 @@ You can test changes from a branch worktree by running the scripts from that wor
 ./scripts/apply-updated-trunk-config.sh
 ```
 
+`apply-updated-trunk-config.sh` resolves the default-branch worktree from git metadata, so it still restores trunk even if `~/.ai-agent-config` currently points at a branch worktree
+
 You must also run `apply-updated-trunk-config.sh` after merging changes to trunk to apply the latest configuration.
 
 #### Manual Testing
