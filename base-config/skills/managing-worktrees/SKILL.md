@@ -1,7 +1,7 @@
 ---
 name: managing-worktrees
 description: Manages git worktrees - creates, lists, cleans up, or resolves paths to them. Use when working with multiple branches simultaneously or managing worktree structure.
-argument-hint: "<repo-dir> [create <branch-name>] | [list] | [remove <branch-name>] | [prune-stale] | [path <branch-name>]"
+argument-hint: "[create <branch-name>] | [list] | [remove <branch-name>] | [prune-stale] | [path <branch-name>]"
 ---
 
 # Worktree Management
@@ -28,22 +28,16 @@ Branch names have slashes replaced with `--` in the directory name.
 
 ## Commands
 
-`shw git worktree` defaults to using the current directory as the repo. When you are operating on a different repo, pass `--repo-dir "<repo-dir>"`. `<repo-dir>` may be either the path to any directory inside the target git repository, or the repo container directory that contains the default-branch folder and `worktrees/`.
+Use the `shw` CLI for all worktree operations.
 
-Use the `shw` CLI for all worktree operations. If `shw` is missing, misconfigured, or returns unexpected output, use the `debugging-shw-cli` skill before continuing.
-
-For agent workflows:
-
-- Prefer `path` when you need a worktree path for a `workdir` or follow-up command
-- After `create`, use `path` if you need the resulting path in machine-readable form
-- Avoid `prune-stale` unless cleanup is the explicit task, because it can remove local branches without remote-tracking refs
+`shw git worktree` defaults to using the current directory as the repo. When you are operating on a different repo, pass `--repo-dir "<repo-dir>"`.
 
 Based on $ARGUMENTS, run the appropriate command:
 
-### create <repo-dir> <branch-name>
+### create <branch-name>
 
 ```bash
-shw git worktree create --repo-dir "<repo-dir>" "<branch-name>"
+shw git worktree create "<branch-name>"
 ```
 
 Creates a new worktree with the specified branch name. By default it updates the default branch first, then prints the created path plus a navigation hint.
@@ -57,37 +51,37 @@ In Datadog repos (remote origin contains `DataDog` or `datadog`):
 In all other repos:
 - `steven/<short-kebab-case-name>`
 
-### list <repo-dir>
+### list
 
 ```bash
-shw git worktree list --repo-dir "<repo-dir>"
+shw git worktree list
 ```
 
-Lists all active worktrees
+Lists all active worktrees for a repo
 
-### remove <repo-dir> <branch-name>
+### remove <branch-name>
 
 ```bash
-shw git worktree remove --repo-dir "<repo-dir>" "<branch-name>"
+shw git worktree remove "<branch-name>"
 ```
 
-Removes the worktree for the specified branch. Also deletes the local branch.
+Removes the worktree for the specified branch and deletes the local branch
 
-### prune-stale <repo-dir>
+### prune-stale
 
 ```bash
-shw git worktree prune-stale --repo-dir "<repo-dir>"
+shw git worktree prune-stale
 ```
 
 Prunes stale worktree references and checks for branches which don't exist on remote. Will remove branches which have never been pushed to remote, so be careful not to run it before pushing branches.
 
-### path <repo-dir> <branch-name>
+### path <branch-name>
 
 ```bash
-shw git worktree path --repo-dir "<repo-dir>" "<branch-name>"
+shw git worktree path "<branch-name>"
 ```
 
-Prints the path to a specific worktree by branch name. This also works for the default branch, returning the main checkout path.
+Prints the path to a specific worktree by branch name
 
 Use the returned path as the working directory for subsequent commands, or in a shell command such as:
 
