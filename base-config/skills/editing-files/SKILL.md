@@ -32,10 +32,6 @@ If the input contains "CLOUDR-" followed by numbers, this is a Jira ticket. Use 
 
 Use the `managing-worktrees` skill to understand the local repo's worktree structure. If the user specified a branch or worktree to use, use it. Otherwise, create a new worktree with the appropriate branch.
 
-When you need a path for subsequent tool calls, use `shw git worktree path ...`. `shw git worktree create ...` is now human-oriented output rather than machine-readable output.
-
-If `shw` is unavailable or the worktree command fails in an unexpected way, use the `debugging-shw-cli` skill before falling back to manual investigation.
-
 ## Step 3: Evaluate Task Complexity
 
 Evaluate the complexity of the requested task to determine if there is a clear best implementation method using the `exploring-and-discovering` skill. If so, skip the next step.
