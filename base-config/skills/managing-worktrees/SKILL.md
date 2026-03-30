@@ -1,7 +1,7 @@
 ---
 name: managing-worktrees
 description: Manages git worktrees - creates, lists, cleans up, or resolves paths to them. Use when working with multiple branches simultaneously or managing worktree structure.
-argument-hint: "<repo-dir> [create <branch-name>] | [list] | [remove <branch-name>] | [clean-all] | [path <name>]"
+argument-hint: "<repo-dir> [create <branch-name>] | [list] | [remove <branch-name>] | [prune-stale] | [path <branch-name>]"
 ---
 
 # Worktree Management
@@ -28,25 +28,25 @@ Branch names have slashes replaced with `--` in the directory name.
 
 ## Commands
 
-All commands take `<repo-dir>` as their first argument — either the path to any directory inside the target git repository, or the repo container directory that contains the default-branch folder and `worktrees/`. This ensures commands work regardless of the agent's current working directory.
+`shw git worktree` defaults to using the current directory as the repo. When you are operating on a different repo, pass `--repo-dir "<repo-dir>"`. `<repo-dir>` may be either the path to any directory inside the target git repository, or the repo container directory that contains the default-branch folder and `worktrees/`.
 
 Use the `shw` CLI for all worktree operations. If `shw` is missing, misconfigured, or returns unexpected output, use the `debugging-shw-cli` skill before continuing.
 
 For agent workflows:
 
-- Prefer `create --quiet` when you need the new worktree path as machine-readable output
-- Prefer `path` when you need to resolve an existing worktree to a `workdir`
-- Avoid `clean-all` unless cleanup is the explicit task, because it can remove local branches without remote-tracking refs
+- Prefer `path` when you need a worktree path for a `workdir` or follow-up command
+- After `create`, use `path` if you need the resulting path in machine-readable form
+- Avoid `prune-stale` unless cleanup is the explicit task, because it can remove local branches without remote-tracking refs
 
 Based on $ARGUMENTS, run the appropriate command:
 
 ### create <repo-dir> <branch-name>
 
 ```bash
-shw git worktree create --quiet "<repo-dir>" "<branch-name>"
+shw git worktree create --repo-dir "<repo-dir>" "<branch-name>"
 ```
 
-Creates a new worktree with the specified branch name and prints only the created path.
+Creates a new worktree with the specified branch name. By default it updates the default branch first, then prints the created path plus a navigation hint.
 
 **Branch Naming Convention:**
 
@@ -60,39 +60,39 @@ In all other repos:
 ### list <repo-dir>
 
 ```bash
-shw git worktree list "<repo-dir>"
+shw git worktree list --repo-dir "<repo-dir>"
 ```
 
-Lists all active worktrees and shows the status of each
+Lists all active worktrees
 
 ### remove <repo-dir> <branch-name>
 
 ```bash
-shw git worktree remove "<repo-dir>" "<branch-name>"
+shw git worktree remove --repo-dir "<repo-dir>" "<branch-name>"
 ```
 
 Removes the worktree for the specified branch. Also deletes the local branch.
 
-### clean-all <repo-dir>
+### prune-stale <repo-dir>
 
 ```bash
-shw git worktree clean-all "<repo-dir>"
+shw git worktree prune-stale --repo-dir "<repo-dir>"
 ```
 
 Prunes stale worktree references and checks for branches which don't exist on remote. Will remove branches which have never been pushed to remote, so be careful not to run it before pushing branches.
 
-### path <repo-dir> <name>
+### path <repo-dir> <branch-name>
 
 ```bash
-shw git worktree path "<repo-dir>" "<name>"
+shw git worktree path --repo-dir "<repo-dir>" "<branch-name>"
 ```
 
-Prints the path to a specific worktree
+Prints the path to a specific worktree by branch name. This also works for the default branch, returning the main checkout path.
 
 Use the returned path as the working directory for subsequent commands, or in a shell command such as:
 
 ```bash
 REPO_DIR="<repo-dir>"
-NAME="<name>"
-cd "$(shw git worktree path "$REPO_DIR" "$NAME")"
+BRANCH_NAME="<branch-name>"
+cd $(shw git worktree path --repo-dir "$REPO_DIR" "$BRANCH_NAME")
 ```
