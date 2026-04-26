@@ -63,19 +63,25 @@ Or update configs and test in one step:
 
 These scripts run each agent (Claude Code, Codex CLI, Cursor CLI) in headless mode with probe questions to confirm that AGENTS.md is loaded and the `exploring-and-discovering` skill is accessible.
 
-You can test changes from a branch worktree by running the scripts from that worktree path:
+#### Branch Validation Workflow
+
+Before presenting a PR to the user, apply and test from the branch worktree:
 
 ```bash
-# Test from a branch worktree
 <branch-worktree>/scripts/update-and-test-configs.sh
-
-# After testing, restore trunk config
-./scripts/apply-updated-trunk-config.sh
 ```
 
-`apply-updated-trunk-config.sh` resolves the default-branch worktree from git metadata, so it still restores trunk even if `~/.ai-agent-config` currently points at a branch worktree
+This repoints `~/.ai-agent-config` to the branch worktree and runs all validation. Tell the user to let you know when they merge so you can apply the post-merge steps.
 
-You must also run `apply-updated-trunk-config.sh` after merging changes to trunk to apply the latest configuration.
+After the user merges, pull the default branch and re-apply and re-test:
+
+```bash
+# From the trunk worktree, after pulling
+./scripts/apply-updated-trunk-config.sh
+./scripts/test-configs.sh
+```
+
+`apply-updated-trunk-config.sh` resolves the default-branch worktree from git metadata, so it still restores trunk even if `~/.ai-agent-config` currently points at a branch worktree.
 
 #### Manual Testing
 
