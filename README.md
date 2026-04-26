@@ -1,6 +1,6 @@
 # AI Agent Config
 
-Central configuration repository for AI agents (as of now: Claude Code, Cursor, Codex CLI)
+Central configuration repository for AI agents (as of now: Claude Code, Codex CLI)
 
 ## Overview
 
@@ -14,8 +14,7 @@ This repo maintains a single source of truth for machine-wide AI agent configura
 │   └── skills/            # Base skill definitions
 ├── overrides/             # Tool-specific modifications, if necessary
 │   ├── claude/            # Claude Code overrides
-│   ├── codex/             # Codex CLI overrides
-│   └── cursor/            # Cursor overrides
+│   └── codex/             # Codex CLI overrides
 ├── generated/             # Script-generated outputs to be used (not committed)
 └── scripts/               # Configuration scripts
 ```
@@ -38,7 +37,6 @@ This repo maintains a single source of truth for machine-wide AI agent configura
 # Or update a specific tool
 ./scripts/configure-claude.sh
 ./scripts/configure-codex.sh
-./scripts/configure-cursor.sh
 ```
 
 ### Testing
@@ -61,7 +59,7 @@ Or update configs and test in one step:
 ./scripts/update-and-test-configs.sh
 ```
 
-These scripts run each agent (Claude Code, Codex CLI, Cursor CLI) in headless mode with probe questions to confirm that AGENTS.md is loaded and the `exploring-and-discovering` skill is accessible.
+These scripts run each agent (Claude Code, Codex CLI) in headless mode with probe questions to confirm that AGENTS.md is loaded and the `exploring-and-discovering` skill is accessible.
 
 #### Branch Validation Workflow
 
@@ -82,25 +80,6 @@ After the user merges, pull the default branch and re-apply and re-test:
 ```
 
 `apply-updated-trunk-config.sh` resolves the default-branch worktree from git metadata, so it still restores trunk even if `~/.ai-agent-config` currently points at a branch worktree.
-
-#### Manual Testing
-
-##### Cursor UI
-
-Manually validate configurations used by the Cursor UI (matches validation script checks):
-
-1. Open Cursor Settings (Cmd+Shift+J) and navigate to **Rules**
-2. Verify skills appear in the **Agent Decides** section (e.g., `exploring-and-discovering`)
-3. In Agent chat, type `/exploring-and-discovering` to confirm the skill is available
-4. Ask Cursor: "What skill should I use for file editing tasks?" - response should reference 'exploring-and-discovering'
-
-Don't forget that setting a global `AGENTS.md` requires a manual operation for Cursor. You'll have to
-
-1. Run `cat ./base-config/AGENTS.md | pbcopy`
-2. Open Cursor Settings (Cmd+Shift+J)
-3. Navigate to: Rules and Commands > User Rules
-4. Delete the existing rule
-5. Paste
 
 ### Style
 
