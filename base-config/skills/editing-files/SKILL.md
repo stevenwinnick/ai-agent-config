@@ -64,7 +64,7 @@ Details: <more detailed description of the changes and why they were made>
 (if applicable) Manual Testing: <steps the user can take to manually verify the changes work>
 Pull request: <link to the pull request>
 
-Also tell the user to let you know when they merge the PR so you can apply any post-merge steps (e.g. pulling the default branch, re-running validation).
+If applicable, also tell the user to let you know when they merge the PR so you can apply any post-merge steps (e.g. pulling the default branch, re-running validation).
 
 ## Step 9: Iterate
 
