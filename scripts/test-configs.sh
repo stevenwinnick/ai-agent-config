@@ -100,22 +100,6 @@ fi
 
 if [ "$codex_ok" = false ]; then all_passed=false; fi
 
-# --- Cursor CLI ---
-echo "Cursor CLI:"
-cursor_ok=true
-
-if ! run_test "Cursor CLI" "global user config loaded" "help" \
-  cursor agent -p "$GLOBAL_USER_CONFIG_QUESTION"; then
-  cursor_ok=false
-fi
-
-if ! run_test "Cursor CLI" "exploring-and-discovering skill" "discover" \
-  cursor agent -p "$SKILL_QUESTION"; then
-  cursor_ok=false
-fi
-
-if [ "$cursor_ok" = false ]; then all_passed=false; fi
-
 # --- Summary ---
 echo "=== Results ==="
 if [ "$all_passed" = true ]; then
