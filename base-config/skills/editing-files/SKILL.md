@@ -18,8 +18,9 @@ Task Progress:
 - [ ] Step 4: Create a plan (if needed)
 - [ ] Step 5: Implement
 - [ ] Step 6: Create or update pull request
-- [ ] Step 7: Present summary
-- [ ] Step 8: Iterate on feedback
+- [ ] Step 7: Validate
+- [ ] Step 8: Present summary
+- [ ] Step 9: Iterate on feedback
 ```
 
 ## Step 1: Parse the Request
@@ -48,7 +49,11 @@ Implement the desired task, using the code standards from the `applying-code-sta
 
 If a pull request has not yet been created, use the `creating-draft-prs` skill to create a pull request. If a pull request has already been created, use the `updating-pull-requests` skill to update it.
 
-## Step 7: Present Summary
+## Step 7: Validate
+
+Run any available tests or validation scripts for the repo. If the repo has no automated tests, skip this step.
+
+## Step 8: Present Summary
 
 Present to the user a summary of the changes which have been made since the last summary in the following format:
 
@@ -56,8 +61,11 @@ Summary: <summary of changes>
 Details: <more detailed description of the changes and why they were made>
 (if applicable) Assumptions Made: <list of any ambiguities in the user's request, and the assumptions made in this implementation>
 (if applicable) Suggested Next Steps: <list of suggested follow-up work and why it is suggested>
+(if applicable) Manual Testing: <steps the user can take to manually verify the changes work>
 Pull request: <link to the pull request>
 
-## Step 8: Iterate
+If applicable, also tell the user to let you know when they merge the PR so you can apply any post-merge steps (e.g. pulling the default branch, re-running validation).
+
+## Step 9: Iterate
 
 If the user requests further changes, return to step 3 and continue from there
