@@ -77,16 +77,14 @@ Prunes stale worktree references and checks for branches which don't exist on re
 
 ### path <branch-name>
 
+From within the repo:
+
 ```bash
-shw git worktree path "<branch-name>"
+shw pd "<branch-name>"
 ```
 
-Prints the path to a specific worktree by branch name
-
-Use the returned path as the working directory for subsequent commands, or in a shell command such as:
+For a different repo:
 
 ```bash
-REPO_DIR="<repo-dir>"
-BRANCH_NAME="<branch-name>"
-cd $(shw git worktree path --repo-dir "$REPO_DIR" "$BRANCH_NAME")
+$(shw pd repo "<repo-name>")/worktrees/<branch-with-slashes-as-->/<repo-name>/
 ```
