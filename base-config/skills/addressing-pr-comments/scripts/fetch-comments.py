@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 """Fetch and process PR comments for the addressing-pr-comments skill.
 
-Fetches all types of PR comments, filters out already-addressed threads,
-condenses output, and returns structured JSON for agent consumption.
+Fetches all types of PR comments, hides threads GitHub already marks
+resolved (and ones an agent already addressed), condenses output, and
+returns structured JSON for agent consumption. Line-level comments also
+carry their review-thread node ID and resolution state so the agent can
+resolve a thread after replying.
 
 Usage:
     fetch-comments.py <owner/repo> <pr_number> [options]
@@ -10,7 +13,7 @@ Usage:
 Options:
     --include-commit-comments   Also fetch commit-level comments (slow for large PRs)
     --comment-ids ID1,ID2,...   Only return these specific comment IDs
-    --all                       Include addressed comments too (marked as addressed)
+    --all                       Include resolved/addressed comments too (marked as such)
 
 Output:
     JSON to stdout with pr metadata, summary, and comment array.
@@ -137,8 +140,75 @@ def classify_thread(replies):
     return True
 
 
-def fetch_line_comments(repo, pr_number):
-    """Fetch line-level review comments and group into threads."""
+def fetch_review_threads(repo, pr_number):
+    """Fetch line review-thread resolution state and node IDs via GraphQL.
+
+    Only line-level review comments live in resolvable threads. Returns a
+    dict mapping each thread's first-comment databaseId to
+    {"thread_node_id", "is_resolved", "is_outdated"}.
+
+    Degrades gracefully: if GraphQL is unavailable (e.g., a token without
+    the needed scope, or GHES that predates the field), returns {} so the
+    caller falls back to the agent-reply heuristic. Resolution then simply
+    won't be available, but fetching still works.
+    """
+    owner, _, name = repo.partition("/")
+    threads = {}
+    cursor = None
+    while True:
+        after = f', after: "{cursor}"' if cursor else ""
+        query = (
+            '{ repository(owner: "%s", name: "%s") { '
+            "pullRequest(number: %s) { reviewThreads(first: 100%s) { "
+            "pageInfo { hasNextPage endCursor } "
+            "nodes { id isResolved isOutdated "
+            "comments(first: 1) { nodes { databaseId } } } } } } }"
+            % (owner, name, pr_number, after)
+        )
+        result = subprocess.run(
+            ["gh", "api", "graphql", "-f", f"query={query}"],
+            capture_output=True,
+            text=True,
+        )
+        if result.returncode != 0:
+            print(
+                "Warning: could not fetch thread resolution state via GraphQL "
+                f"({result.stderr.strip()}); falling back to reply heuristic.",
+                file=sys.stderr,
+            )
+            return threads
+        pr = (
+            json.loads(result.stdout)
+            .get("data", {})
+            .get("repository", {})
+            .get("pullRequest")
+        )
+        if not pr:
+            return threads
+        review_threads = pr["reviewThreads"]
+        for node in review_threads["nodes"]:
+            comments = node["comments"]["nodes"]
+            if not comments:
+                continue
+            threads[comments[0]["databaseId"]] = {
+                "thread_node_id": node["id"],
+                "is_resolved": node["isResolved"],
+                "is_outdated": node["isOutdated"],
+            }
+        page_info = review_threads["pageInfo"]
+        if page_info["hasNextPage"]:
+            cursor = page_info["endCursor"]
+        else:
+            break
+    return threads
+
+
+def fetch_line_comments(repo, pr_number, thread_state):
+    """Fetch line-level review comments and group into threads.
+
+    `thread_state` is the mapping returned by fetch_review_threads, used to
+    attach each comment's GitHub resolution state and thread node ID.
+    """
     all_comments = gh_api_list(f"repos/{repo}/pulls/{pr_number}/comments")
 
     top_level = []
@@ -156,6 +226,7 @@ def fetch_line_comments(repo, pr_number):
         thread_replies.sort(key=lambda r: r.get("created_at", ""))
 
         addressed = classify_thread(thread_replies)
+        state = thread_state.get(c["id"], {})
 
         results.append(
             {
@@ -167,6 +238,9 @@ def fetch_line_comments(repo, pr_number):
                 "body": c["body"],
                 "context_snippet": condense_diff_hunk(c.get("diff_hunk", "")),
                 "addressed": addressed,
+                "is_resolved": state.get("is_resolved", False),
+                "is_outdated": state.get("is_outdated", False),
+                "thread_node_id": state.get("thread_node_id"),
                 "thread": [
                     {
                         "user": r["user"]["login"],
@@ -197,6 +271,9 @@ def fetch_review_comments(repo, pr_number):
                     "body": condense_html(r["body"]),
                     "context_snippet": None,
                     "addressed": False,
+                    "is_resolved": False,
+                    "is_outdated": False,
+                    "thread_node_id": None,
                     "state": r.get("state", ""),
                     "thread": [],
                 }
@@ -220,6 +297,9 @@ def fetch_conversation_comments(repo, pr_number):
                 "body": condense_html(body),
                 "context_snippet": None,
                 "addressed": is_agent_reply(body),
+                "is_resolved": False,
+                "is_outdated": False,
+                "thread_node_id": None,
                 "thread": [],
             }
         )
@@ -244,6 +324,9 @@ def fetch_commit_comments(repo, pr_number):
                     "body": condense_html(c["body"]),
                     "context_snippet": None,
                     "addressed": False,
+                    "is_resolved": False,
+                    "is_outdated": False,
+                    "thread_node_id": None,
                     "commit_sha": sha[:8],
                     "thread": [],
                 }
@@ -251,7 +334,7 @@ def fetch_commit_comments(repo, pr_number):
     return results
 
 
-def build_summary(unresolved, addressed):
+def build_summary(unresolved, hidden):
     """Build a human-readable summary string."""
     type_labels = {
         "line": "line-level",
@@ -274,8 +357,8 @@ def build_summary(unresolved, addressed):
     summary = f"{n} unresolved comment{'s' if n != 1 else ''}"
     if summary_parts:
         summary += f" ({', '.join(summary_parts)})"
-    if addressed:
-        summary += f", {len(addressed)} already addressed"
+    if hidden:
+        summary += f", {len(hidden)} already resolved or addressed"
 
     return summary
 
@@ -313,7 +396,8 @@ def main():
 
     # Fetch all comment types
     print("Fetching line-level review comments...", file=sys.stderr)
-    line_comments = fetch_line_comments(repo, pr_number)
+    thread_state = fetch_review_threads(repo, pr_number)
+    line_comments = fetch_line_comments(repo, pr_number, thread_state)
 
     print("Fetching review-level comments...", file=sys.stderr)
     review_comments = fetch_review_comments(repo, pr_number)
@@ -335,11 +419,15 @@ def main():
     if filter_ids:
         all_comments = [c for c in all_comments if str(c["id"]) in filter_ids]
 
-    # Separate addressed vs unresolved
-    unresolved = [c for c in all_comments if not c["addressed"]]
-    addressed = [c for c in all_comments if c["addressed"]]
+    # Hide threads GitHub already marks resolved, plus ones an agent already
+    # replied to with no reviewer follow-up. Everything else still needs work.
+    def is_hidden(c):
+        return c.get("is_resolved") or c["addressed"]
 
-    summary = build_summary(unresolved, addressed)
+    unresolved = [c for c in all_comments if not is_hidden(c)]
+    hidden = [c for c in all_comments if is_hidden(c)]
+
+    summary = build_summary(unresolved, hidden)
     print(f"\n{summary}", file=sys.stderr)
 
     # Build output
