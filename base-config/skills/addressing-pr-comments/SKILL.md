@@ -11,8 +11,8 @@ Copy this checklist and track progress:
 ```
 Task Progress:
 - [ ] Step 1: Parse arguments and identify PR
-- [ ] Step 2: Fetch comments
-- [ ] Step 3: Address each comment
+- [ ] Step 2: Fetch and review comments
+- [ ] Step 3: Address, reply to, and resolve each comment
 - [ ] Step 4: Push and update
 - [ ] Step 5: Report
 ```
@@ -25,7 +25,7 @@ Arguments ($ARGUMENTS) can be:
 - **A PR URL or number** — address all unresolved comments on that PR
 - **One or more comment URLs** — address only those specific comments
 
-Determine which case applies by inspecting the arguments. PR URLs contain `/pull/` while comment URLs contain `/discussion_r` or `#discussion_r`. A bare number refers to a PR number.
+PR URLs contain `/pull/` while comment URLs contain `/discussion_r` or `#discussion_r`. A bare number refers to a PR number.
 
 To identify the PR:
 
@@ -37,100 +37,89 @@ gh pr view --json number,url,headRefName
 gh pr view <pr-number-or-url> --json number,url,headRefName
 ```
 
+Extract `owner/repo` from the URL (e.g., `octocat/hello-world` from `https://github.com/octocat/hello-world/pull/123`).
+
+If specific comment URLs were provided, extract their numeric IDs for filtering in Step 2.
+
 If no PR is found, stop and inform the user.
 
-## Step 2: Fetch Comments
+## Step 2: Fetch and Review Comments
 
-Determine whether to fetch all comments or specific ones based on Step 1.
-
-There are four types of PR comments to fetch:
-
-### Line-level review comments
-
-These are comments attached to specific lines of code in the diff.
+Run the fetch script to retrieve all comments in a single call:
 
 ```bash
-# All pending line-level review comments (top-level only, not replies)
-gh api repos/{owner}/{repo}/pulls/{pr_number}/comments \
-  --jq '[.[] | select(.in_reply_to_id == null) | {id, path, line, body, diff_hunk}]'
+# All unresolved comments
+python3 ~/.claude/skills/addressing-pr-comments/scripts/fetch-comments.py <owner/repo> <pr_number>
 
-# Or a specific comment by ID
-gh api repos/{owner}/{repo}/pulls/{pr_number}/comments/{comment_id} \
-  --jq '{id, path, line, body, diff_hunk}'
+# Only specific comment IDs
+python3 ~/.claude/skills/addressing-pr-comments/scripts/fetch-comments.py <owner/repo> <pr_number> --comment-ids <id1>,<id2>,...
+
+# Include already-resolved/addressed comments to see the full picture
+python3 ~/.claude/skills/addressing-pr-comments/scripts/fetch-comments.py <owner/repo> <pr_number> --all
 ```
 
-### Review-level comments
+The script outputs structured JSON to stdout:
 
-These are top-level comments submitted as part of a review (the body text written when a reviewer submits a review with "Comment", "Approve", or "Request changes"). They are not attached to specific lines.
+- `pr` — PR metadata: `number`, `url`, `author`, `head_branch`
+- `summary` — Human-readable count of unresolved vs. resolved/addressed comments
+- `comments` — Array of comments to address, each with:
+  - `id`, `type` (`line`/`review`/`conversation`/`commit`), `user`
+  - `path`, `line` — file location (line-level comments only)
+  - `body` — the reviewer's comment text
+  - `context_snippet` — condensed diff context near the commented line (line-level only)
+  - `thread` — array of replies, each with `user`, `body`, `is_agent`, `created_at`
+  - `addressed` — `true` if the last reply is an agent reply with no reviewer follow-up
+  - `is_resolved` — `true` if GitHub already marks the review thread resolved (line comments only)
+  - `is_outdated` — `true` if the commented line has since changed (line comments only)
+  - `thread_node_id` — the review thread's GraphQL node ID, needed to resolve it in Step 3 (line comments only; `null` for other types, which have no resolvable thread)
+
+By default the script hides comments that are already resolved on GitHub or that an agent already replied to with no reviewer follow-up, so you only see what still needs work. A thread counts as agent-addressed when its last reply starts with `[comment from ` or `[addressed by ` and no reviewer replied after it. Use `--all` to see everything, including resolved threads.
+
+Progress and summary are printed to stderr.
+
+If no comments need attention, inform the user and stop.
+
+## Step 3: Address, Reply To, and Resolve Each Comment
+
+For each comment in the output:
+
+1. **Read context** — For line-level comments, use `path` and `line` to read the file directly. Use the `exploring-and-discovering` skill if more context is needed beyond what `context_snippet` shows.
+2. **Understand the request** — Read the `body` and any `thread` entries to understand what the reviewer wants, including follow-up feedback. Decide what the comment actually asks for: a concrete change, a question to answer, a suggestion to weigh, or just an observation.
+3. **Make changes** — Code, docs, config, or whatever is appropriate. Follow the `editing-files` skill for code changes. If you disagree with the suggestion or it has trade-offs the reviewer should weigh, it's fine not to make the change — say so in your reply instead.
+4. **Reply on GitHub** using the reply script:
 
 ```bash
-# All reviews with non-empty body text
-gh api repos/{owner}/{repo}/pulls/{pr_number}/reviews \
-  --jq '[.[] | select(.body | length > 0) | {id, body, state, user: .user.login}]'
+echo '[comment from <AI tool name>]
+
+<brief description of action taken>' \
+  | ~/.claude/skills/addressing-pr-comments/scripts/reply-to-comment.sh <owner/repo> <pr_number> <comment_type> <comment_id>
 ```
 
-### Conversation comments
+Where `<comment_type>` matches the comment's `type` field: `line`, `review`, `conversation`, or `commit`. For `line` type, `<comment_id>` is required. For other types it is optional.
 
-These are general comments on the PR conversation thread, not attached to code or a review. Since GitHub treats PRs as issues, these are fetched via the issues API.
+Keep replies concise and specific. State what you did (or why you didn't) and reference the change. Don't restate the reviewer's comment or repeat what's already in the thread. Lead with the agent-attribution prefix so both humans and future runs can tell the reply came from an agent.
 
-```bash
-# All conversation-level comments
-gh api repos/{owner}/{repo}/issues/{pr_number}/comments \
-  --jq '[.[] | {id, body, user: .user.login}]'
-```
+5. **Resolve the thread when — and only when — it's truly done.** Only line-level review comments have resolvable threads (use the comment's `thread_node_id`). After replying, decide whether to resolve:
 
-### Commit comments
+   **Resolve** when the feedback is fully handled and a human reviewer is unlikely to need to revisit it:
+   - A concrete, mechanical change you made exactly as asked (rename, remove, typo, formatting, extract a constant).
+   - A direct question you answered definitively, with no decision left open.
+   - A suggestion you applied in full with no meaningful trade-off.
 
-These are comments left directly on individual commits included in the PR (via the commit's page, not through the review flow).
+   **Leave open** (reply but do NOT resolve) when a human reviewer would still benefit from looking:
+   - You disagreed, pushed back, or proposed an alternative — let the reviewer decide.
+   - You only partially addressed it, deferred it, or filed a follow-up instead.
+   - It raises a design, architecture, or scope question, or any judgment call.
+   - The reviewer explicitly asked to confirm the result themselves, or it's a non-actionable observation/praise.
+   - You're at all unsure whether the reviewer would consider it settled.
 
-```bash
-# Get commits on the PR
-gh api repos/{owner}/{repo}/pulls/{pr_number}/commits --jq '[.[].sha]'
+   When in doubt, leave it open — resolving is for the unambiguous cases. Resolve with:
 
-# Then for each commit SHA that has comments
-gh api repos/{owner}/{repo}/commits/{commit_sha}/comments \
-  --jq '[.[] | {id, body, path, line, user: .user.login}]'
-```
+   ```bash
+   ~/.claude/skills/addressing-pr-comments/scripts/resolve-thread.sh <thread_node_id>
+   ```
 
-### Determine which comments still need attention
-
-```bash
-gh pr view {pr_number} --json reviewDecision,reviews
-```
-
-Filter to only comments that haven't been addressed yet (no reply from the PR author indicating the comment was addressed). For review-level comments, consider a review addressed if a subsequent reply or commit has addressed the feedback.
-
-If there are no unresolved comments across all types, inform the user and stop.
-
-## Step 3: Address Each Comment
-
-For each comment to be addressed:
-
-1. Read the relevant file and surrounding context using the `exploring-and-discovering` skill if the context from the diff hunk is insufficient
-2. Understand what the reviewer is requesting
-3. Address the comment — this may involve code changes (following the `editing-files` skill), documentation updates, configuration changes, or any other appropriate action
-4. Reply on GitHub indicating what was done and which AI agent/tool made the change:
-
-For line-level comments, reply to the comment thread:
-
-```bash
-gh api repos/{owner}/{repo}/pulls/{pr_number}/comments/{comment_id}/replies \
-  -f body='[comment from <AI tool name>]
-
-<brief description of the action taken>'
-```
-
-For review-level, conversation, and commit comments, leave a PR comment:
-
-```bash
-gh pr comment {pr_number} --body '[comment from <AI tool name>]
-
-Addressing feedback from @{username}:
-
-<brief description of the actions taken>'
-```
-
-If a comment is unclear or you're unsure how to address it, skip it and flag it to the user rather than guessing.
+If a comment is unclear or you're unsure how to address it, skip it (don't reply or resolve) and flag it to the user rather than guessing.
 
 ## Step 4: Push and Update
 
@@ -142,6 +131,7 @@ If a comment is unclear or you're unsure how to address it, skip it and flag it 
 
 Present a summary of what was done:
 
-- Comments addressed (with file and line references)
+- Comments addressed (with file and line references), noting which threads you resolved
+- Comments replied to but left open for the reviewer, and why
 - Comments skipped and why
 - Link to the PR
