@@ -45,7 +45,7 @@ Implement the desired task, using the code standards from the `writing-code-meet
 
 ## Step 6: Create or Update Pull Request
 
-If a pull request has not yet been created, use the `creating-draft-prs` skill to create a pull request. If a pull request has already been created, use the `updating-pull-requests` skill to update it.
+If a pull request has not yet been created, use the `creating-prs` skill to create a pull request. If a pull request has already been created, use the `updating-pull-requests` skill to update it.
 
 ## Step 7: Validate
 
@@ -62,7 +62,7 @@ Details: <more detailed description of the changes and why they were made>
 (if applicable) Manual Testing: <steps the user can take to manually verify the changes work>
 Pull request: <link to the pull request>
 
-If applicable, also tell the user to let you know when they merge the PR so you can apply any post-merge steps (e.g. pulling the default branch, re-running validation).
+If applicable, also tell the user to let you know when the PR is merged so you can apply any post-merge steps (e.g. pulling the default branch, re-running validation). If the user asks you to merge, use the `merging-pull-requests` skill.
 
 ## Step 9: Iterate
 

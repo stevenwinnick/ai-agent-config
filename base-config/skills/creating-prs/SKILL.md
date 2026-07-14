@@ -1,9 +1,9 @@
 ---
-name: creating-draft-prs
-description: Creates a draft pull request for the current branch. Use when initial work on a branch is ready and a PR should be opened.
+name: creating-prs
+description: Creates a pull request for the current branch. Use when initial work on a branch is ready and a PR should be opened.
 ---
 
-# Create Draft Pull Request
+# Create Pull Request
 
 1. Push the current branch to GitHub
 
@@ -11,12 +11,12 @@ description: Creates a draft pull request for the current branch. Use when initi
 git push -u origin HEAD
 ```
 
-2. Create a draft PR
+2. Create the PR
 
 - Use the `generating-pr-body` skill to format the pull request body
 
 ```bash
-gh pr create --draft \
+gh pr create \
   --title "<Short Descriptive Title Capitalized with Title Case>" \
   --body "<body generated with the generating-pr-body skill>"
 ```
