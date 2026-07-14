@@ -5,7 +5,7 @@ description: Sets up a reproducible, isolated environment when starting work on 
 
 # Starting Code Projects
 
-Use these standards when starting work on a project I own — either a new project I create or an existing project I onboard to and will work in. The goal is an isolated, reproducible environment so dependencies stay project-scoped and collaborators can onboard quickly. Do not install project dependencies into a global or system-wide location.
+Use these standards when starting work on a new project I create or an existing project I onboard to and will work in. The goal is an isolated, reproducible environment so dependencies stay project-scoped and collaborators can onboard quickly. Avoid installing project dependencies into a global or system-wide location when possible.
 
 This does not apply to repos cloned from others that don't already use these tools; see "Scope and Limits" below.
 
