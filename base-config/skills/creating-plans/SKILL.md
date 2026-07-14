@@ -13,7 +13,7 @@ Identify any constraints on the plan possibility space. This may include constra
 
 ## Step 2: Identify Plan Details
 
-Use the `exploring-and-discovering` skill to identify the plan details in the format required by the next step
+Explore the available resources to identify the plan details in the format required by the next step
 
 ## Step 3: Present Plan
 

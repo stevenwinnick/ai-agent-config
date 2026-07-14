@@ -10,7 +10,7 @@ Follow this workflow to answer the user's question: $ARGUMENTS
 
 ## Step 1: Discover the Answer
 
-Use the `exploring-and-discovering` skill to find the answer in the format required by the next step.
+Explore the available resources to find the answer in the format required by the next step.
 
 ## Step 2: Provide an Answer
 
@@ -24,10 +24,6 @@ Details: <more detailed answer>
 - Reference specific file paths and line numbers when citing code
 - If the answer requires understanding multiple files, explain the relationships
 - If you're uncertain about something, say so rather than guessing
-
-## Step 3: Iterate
-
-If the user has further questions, return to step 1, making use of context already gathered.
 
 ## General Guidelines
 
