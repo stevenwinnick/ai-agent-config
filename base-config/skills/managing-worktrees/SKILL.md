@@ -16,9 +16,9 @@ $CODE_ROOT/
     <default-branch-name>/
       <repo-name>/           # Main working copy (on default branch)
     worktrees/
-      stevenwinnick--CLOUDR-123-feature-name/
+      steven--feature-name/
         <repo-name>/         # Worktree for this branch
-      stevenwinnick--NOJIRA-260204-fix-bug/
+      steven--fix-bug/
         <repo-name>/         # Another worktree
 ```
 
@@ -44,11 +44,6 @@ Creates a new worktree with the specified branch name. By default it updates the
 
 **Branch Naming Convention:**
 
-In Datadog repos (remote origin contains `DataDog` or `datadog`):
-- With Jira ticket: `stevenwinnick/CLOUDR-<number>-<kebab-case-summary>`
-- Without Jira ticket: `stevenwinnick/NOJIRA-<YYMMDD>-<kebab-case-summary>`
-
-In all other repos:
 - `steven/<short-kebab-case-name>`
 
 ### list
