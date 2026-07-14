@@ -35,7 +35,7 @@ parent_dir=$(dirname "$worktree_path")
 echo "Removing worktree: $worktree_path (branch: $branch_name)"
 git worktree remove --force "$worktree_path"
 
-# Delete the parent directory (e.g., worktrees/stevenwinnick--CLOUDR-123-foo/)
+# Delete the parent directory (e.g., worktrees/steven--foo/)
 if [[ -d "$parent_dir" ]]; then
     echo "Removing directory: $parent_dir"
     rm -rf "$parent_dir"

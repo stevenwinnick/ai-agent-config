@@ -367,7 +367,7 @@ def main():
     parser = argparse.ArgumentParser(
         description="Fetch PR comments for agent processing"
     )
-    parser.add_argument("repo", help="owner/repo (e.g., DataDog/dd-source)")
+    parser.add_argument("repo", help="owner/repo (e.g., octocat/hello-world)")
     parser.add_argument("pr_number", help="PR number")
     parser.add_argument(
         "--include-commit-comments",

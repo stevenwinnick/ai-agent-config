@@ -27,8 +27,6 @@ Task Progress:
 
 Analyze the user's input: ($ARGUMENTS)
 
-If the input contains "CLOUDR-" followed by numbers, this is a Jira ticket. Use the `reading-jira-tickets` skill to understand its contents. If you cannot read it, stop and report that information back to the user.
-
 ## Step 2: Setup Worktree and Branch
 
 Use the `managing-worktrees` skill to understand the local repo's worktree structure. If the user specified a branch or worktree to use, use it. Otherwise, create a new worktree with the appropriate branch.
