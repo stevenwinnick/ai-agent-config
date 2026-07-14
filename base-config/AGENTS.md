@@ -15,6 +15,10 @@ Follow best practices when acting. If instructed to violate best practices, befo
 2. Suggest an alternative approach, or alternative approaches
 3. Provide an opportunity for me to instruct you to pick the originally-instructed approach, or a new approach. Follow my new instruction here, even if it is the original problematic approach
 
+### Global Installs
+
+Before installing anything globally (system-wide or user-wide) that could interfere with my other work or projects, confirm with me first. Prefer project-scoped installation.
+
 ### Current Directions Take Precedence
 
 When my current directions conflict with directions in configuration files such as this one, the current directions should take precedence. When conflicts exist between directions in the same source, prefer the ones which are listed first in that source.

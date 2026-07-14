@@ -1,5 +1,5 @@
 ---
-name: applying-code-standards
+name: writing-code-meeting-standards
 description: Defines code quality standards that apply to all code written or modified. Use when writing or modifying any code.
 ---
 

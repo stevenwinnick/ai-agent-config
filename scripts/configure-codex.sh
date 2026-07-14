@@ -20,6 +20,17 @@ echo "Symlinked $CODEX_HOME/AGENTS.md -> base-config/AGENTS.md"
 
 # Link shared skills while preserving any existing non-symlink skills (e.g., .system)
 mkdir -p "$CODEX_HOME/skills"
+
+# Prune stale skill symlinks whose source no longer exists (e.g., renamed or removed skills).
+# Only symlinks are considered, so real files/dirs (e.g., .system) are left untouched.
+for existing in "$CODEX_HOME/skills"/*; do
+  # `-e` follows the symlink, so a broken (dangling) link fails this test
+  if [ -L "$existing" ] && [ ! -e "$existing" ]; then
+    rm -f "$existing"
+    echo "Removed stale symlink $existing"
+  fi
+done
+
 for skill_dir in "$BASE_CONFIG_DIR/skills"/*; do
   skill_name="$(basename "$skill_dir")"
   target="$CODEX_HOME/skills/$skill_name"

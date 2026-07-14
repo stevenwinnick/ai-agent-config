@@ -41,7 +41,7 @@ Use the `creating-plans` skill to create a plan for the user to review before yo
 
 ## Step 5: Implement
 
-Implement the desired task, using the code standards from the `applying-code-standards` skill
+Implement the desired task, using the code standards from the `writing-code-meeting-standards` skill
 
 ## Step 6: Create or Update Pull Request
 
