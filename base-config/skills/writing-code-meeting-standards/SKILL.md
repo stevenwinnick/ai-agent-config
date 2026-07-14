@@ -1,6 +1,6 @@
 ---
-name: applying-code-standards
-description: Defines code quality standards that apply to all code written or modified. Use when writing or modifying any code, setting up a project's environment, or installing dependencies.
+name: writing-code-meeting-standards
+description: Defines code quality standards that apply to all code written or modified. Use when writing or modifying any code.
 ---
 
 # Code Standards
@@ -14,30 +14,6 @@ Match the conventions and style already present in the codebase. Look at nearby 
 ## Follow Best Practices
 
 Follow up-to-date best practices when writing code
-
-## Environment & Dependency Management
-
-For projects I own or create, use an isolated, reproducible environment so dependencies stay project-scoped and collaborators can onboard quickly. Do not install project dependencies into a global or system-wide location.
-
-### Standard Tools by Language
-
-Use the recorded tool for each language so setup stays consistent across my projects:
-
-- **Python**: `uv` for the Python version, virtual environment, dependencies, and lockfile-based reproducibility (onboard collaborators with `uv sync`)
-
-When starting a project in a language not listed above:
-
-1. Recommend an approach for an isolated, reproducible environment; if there are multiple good options, present the pros and cons and let me pick
-2. After I choose, use the `improving-agent-config` skill to add the choice to the list above so future projects stay consistent
-
-### Global Installs
-
-Before installing anything globally (system-wide or user-wide) that could interfere with my other work or projects, confirm with me first. Prefer project-scoped installation.
-
-### Scope and Limits
-
-- Don't default to Docker or other containers; they add overhead that slows things down, so use them only when a task explicitly needs them
-- Don't impose these tools on repos cloned from others that don't already use them, where doing so would pollute the repo or add local-only rules to remember; follow the conventions already present in that repo instead
 
 ## Testing
 
