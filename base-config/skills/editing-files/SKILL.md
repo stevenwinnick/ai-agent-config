@@ -35,7 +35,7 @@ Use the `managing-worktrees` skill to understand the local repo's worktree struc
 
 ## Step 3: Evaluate Task Complexity
 
-Evaluate the complexity of the requested task to determine if there is a clear best implementation method using the `exploring-and-discovering` skill. If so, skip the next step.
+Assess the complexity of the requested task. If there is a clear best implementation method, skip the next step.
 
 ## Step 4 (if applicable): Create a Plan
 

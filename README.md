@@ -47,7 +47,7 @@ Always run tests before proposing modifications to this repo (e.g., before creat
 
 #### Validation Scripts
 
-Run the test script to validate that all agents can see AGENTS.md and the `exploring-and-discovering` skill:
+Run the test script to validate that all agents can see AGENTS.md and the `editing-files` skill:
 
 ```bash
 ./scripts/test-configs.sh
@@ -59,7 +59,7 @@ Or update configs and test in one step:
 ./scripts/update-and-test-configs.sh
 ```
 
-These scripts run each agent (Claude Code, Codex CLI) in headless mode with probe questions to confirm that AGENTS.md is loaded and the `exploring-and-discovering` skill is accessible.
+These scripts run each agent (Claude Code, Codex CLI) in headless mode with probe questions to confirm that AGENTS.md is loaded and the `editing-files` skill is accessible.
 
 #### Branch Validation Workflow
 

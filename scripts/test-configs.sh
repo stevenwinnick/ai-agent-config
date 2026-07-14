@@ -1,11 +1,11 @@
 #!/bin/bash
 # Functional test for AI coding agent configurations
-# Runs each agent in headless mode to validate that it can see the global user config and the exploring-and-discovering skill
+# Runs each agent in headless mode to validate that it can see the global user config and the editing-files skill
 
 TIMEOUT=120
 
 GLOBAL_USER_CONFIG_QUESTION='What is the instruction in the "About You" section of your global user config file? Reply with ONLY the instruction text, nothing else.'
-SKILL_QUESTION='What skill should you use when the information needed to complete a task is not already known? Reply with ONLY the skill name, nothing else.'
+SKILL_QUESTION='What skill should you use when the user asks you to make a change that involves modifying files? Reply with ONLY the skill name, nothing else.'
 
 # Bash-native timeout. GNU `timeout` causes some CLI tools (e.g. claude) to hang
 # due to process group / signal handling incompatibilities.
@@ -77,7 +77,7 @@ if ! run_test "Claude Code" "global user config loaded" "help" \
   claude_ok=false
 fi
 
-if ! run_test "Claude Code" "exploring-and-discovering skill" "discover" \
+if ! run_test "Claude Code" "editing-files skill" "editing-files" \
   claude -p --no-session-persistence "$SKILL_QUESTION"; then
   claude_ok=false
 fi
@@ -93,7 +93,7 @@ if ! run_test "Codex CLI" "global user config loaded" "help" \
   codex_ok=false
 fi
 
-if ! run_test "Codex CLI" "exploring-and-discovering skill" "discover" \
+if ! run_test "Codex CLI" "editing-files skill" "editing-files" \
   codex exec --skip-git-repo-check "$SKILL_QUESTION"; then
   codex_ok=false
 fi

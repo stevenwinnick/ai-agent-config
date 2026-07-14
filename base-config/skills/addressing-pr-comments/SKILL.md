@@ -83,7 +83,7 @@ If no comments need attention, inform the user and stop.
 
 For each comment in the output:
 
-1. **Read context** — For line-level comments, use `path` and `line` to read the file directly. Use the `exploring-and-discovering` skill if more context is needed beyond what `context_snippet` shows.
+1. **Read context** — For line-level comments, use `path` and `line` to read the file directly. Read more of the surrounding code if `context_snippet` doesn't show enough.
 2. **Understand the request** — Read the `body` and any `thread` entries to understand what the reviewer wants, including follow-up feedback. Decide what the comment actually asks for: a concrete change, a question to answer, a suggestion to weigh, or just an observation.
 3. **Make changes** — Code, docs, config, or whatever is appropriate. Follow the `editing-files` skill for code changes. If you disagree with the suggestion or it has trade-offs the reviewer should weigh, it's fine not to make the change — say so in your reply instead.
 4. **Reply on GitHub** using the reply script:
