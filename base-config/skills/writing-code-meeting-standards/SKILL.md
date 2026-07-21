@@ -44,11 +44,13 @@ Only implement the changes requested. Don't make other improvements to the code 
 - One-sentence-or-less paragraphs and bullet points should not end with a period
 - Include at most one H1 header in a markdown block or file. If included, it should be at the top.
 
-## Comment Sparingly, and Only for Why
+## Comment Sparingly
 
-Default to no comments — good naming should make code self-explanatory. Add one only when it captures something the code itself can't: a non-obvious constraint, a subtle invariant, a workaround for a specific bug, or behavior that would otherwise surprise a reader. Never use a comment to restate what the code does, or to reference the current task, PR, or issue.
+Default to no comments. Most code should be self-explanatory. Add a comment only when it captures something that a quick read of the code doesn't: confusing or non-obvious behavior, workarounds and design constraints not captured elsewhere, footguns, or facts that if unknown may trip future contributors.
 
-Keep comments to one line where possible. A longer, multi-line comment is warranted when explaining something with broad scope (e.g. a section of code, not just one line) or genuine complexity, such as a non-obvious algorithm, a regex pattern, or a non-trivial shell command.
+Only reference the current task if necessary to understanding design decisions, or if a link to the task tracked in other software contains additional context that would benefit future contributors.
+
+Keep comments to one line where possible. A longer, multi-line comment is warranted when explaining something with broad scope or genuine complexity, such as a non-obvious algorithm, regex pattern, or a non-trivial shell command.
 
 ## Avoid Formatting Requiring Visual Consistency
 
