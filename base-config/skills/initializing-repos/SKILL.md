@@ -2,7 +2,6 @@
 name: initializing-repos
 description: Initializes a new local git repo in the preferred worktree directory structure and creates its GitHub remote. Use when the user wants to create a new project.
 argument-hint: "<repo-name> [--description <description>] [--public]"
-disable-model-invocation: true
 ---
 
 # Initialize Repo
