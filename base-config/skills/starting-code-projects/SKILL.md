@@ -22,6 +22,7 @@ Set the project up in my preferred worktree layout using the `shw` CLI, via the 
 Use the recorded tool for each language so setup stays consistent across my projects:
 
 - **Python**: `uv` for the Python version, virtual environment, dependencies, and lockfile-based reproducibility
+- **Go**: the built-in module system (`go.mod`/`go.sum`); no extra tool needed. Pin the toolchain version via the `go` directive in `go.mod`
 
 When starting a project in a language not listed above:
 
