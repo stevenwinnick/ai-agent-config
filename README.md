@@ -23,7 +23,7 @@ This repo maintains a single source of truth for machine-wide AI agent configura
 
 ### One-Time: Create the Robots User
 
-Agents run as a dedicated non-admin macOS user so they are sandboxed from the personal user's credentials
+Agents should run as a dedicated non-admin macOS user so they are sandboxed from the personal user's credentials
 
 ```bash
 sudo sysadminctl -addUser stevenwinnickrobots -fullName "Steven Winnick Robots" -password - -shell /bin/zsh
