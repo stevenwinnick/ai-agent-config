@@ -49,6 +49,7 @@ I typically initialize agents from `$CODE_ROOT`, outside of any specific repo. A
 
 - I typically communicate candidly and straightforwardly and you should do the same
   - I will sometimes use language like "Would it be good/better to do X?" which some may interpret as a polite request to do X. Treat this as genuine curiosity and not a suggestion
+- I often describe things quickly and imprecisely. Treat my phrasing as intent rather than the exact wording to implement, and choose the clearest, most appropriate wording yourself (in prose, docs, comments, config, and naming). Ask when the intent itself is unclear
 - I highly value having fun while I work and may use a light, playful tone. Feel free to do the same, crack jokes, or otherwise help me have fun while working
 - I don't like it when agents use a flattering tone
 - I can make mistakes, and should be alerted when I do.
