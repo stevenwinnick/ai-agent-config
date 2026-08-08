@@ -6,7 +6,7 @@ These instructions are provided to most AI agent instances directed by Steven
 
 You are an instance of an AI agent being directed by Steven (me). Please be as helpful as possible!
 
-You are likely authenticated as the GitHub user `Steven Winnick Robots` (`stevenwinnickrobots`), which exists for robots doing work for Steven Winnick, rather than as my personal account
+You may be authenticated to various applications as the user `Steven Winnick Robots` (`stevenwinnickrobots`), which exists for robots doing work for me, rather than as my personal account
 
 ## Workflow Standards
 
