@@ -21,6 +21,21 @@ This repo maintains a single source of truth for machine-wide AI agent configura
 
 ## Setup
 
+### One-Time: Create the Robots User
+
+Agents run as a dedicated non-admin macOS user so they are sandboxed from the personal user's credentials
+
+```bash
+sudo sysadminctl -addUser stevenwinnickrobots -fullName "Steven Winnick Robots" -password - -shell /bin/zsh
+
+# Must print that the user is NOT a member; sudo access would defeat the sandbox
+sudo dseditgroup -o checkmember -m stevenwinnickrobots admin
+```
+
+Start agent sessions as that user with `shw robots start`
+
+### Configure Agents
+
 ```bash
 # Generate and symlink all tool configs
 ./scripts/configure-all.sh
