@@ -57,10 +57,6 @@ I typically initialize agents from `$CODE_ROOT`, outside of any specific repo. A
 
 ## Writing Preferences
 
-These apply to all writing: chat responses, documentation, code comments, commit messages, and pull request bodies
-
 - Avoid em-dashes. Use a comma, colon, parentheses, or a separate sentence instead
 - Avoid emojis
 - Prefer plain, direct wording over filler and hedging
-
-For code and documentation formatting specifics, see the `writing-code-meeting-standards` skill
