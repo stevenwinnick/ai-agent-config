@@ -33,7 +33,8 @@ Only implement the changes requested. Don't make other improvements to the code 
 
 ## Formatting Preferences
 
-- Avoid using emojis
+Also apply the general writing preferences from `AGENTS.md`, including avoiding em-dashes and emojis
+
 - Use markdown formatting in documentation and comments where appropriate
 - When possible, use angled brackets to indicate placeholders
 - Leave a newline at the end of files
