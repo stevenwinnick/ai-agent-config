@@ -1,11 +1,19 @@
 ---
 name: generating-pr-body
-description: Generates the body content for a new or updated pull request. Use when creating or updating PR descriptions.
+description: Generates the title and body content for a new or updated pull request. Use when creating or updating PR titles or descriptions.
 ---
 
-# Pull Request Body Formatting
+# Pull Request Formatting
 
-Use the following format for pull request bodies
+Use the following format for every new pull request
+
+When updating an existing pull request, keep the structure that is already there, and rewrite the body to cover all of the changes in the pull request, not just the most recent commits
+
+## Title
+
+Short, descriptive, and in Title Case
+
+## Body
 
 ```markdown
 ## Summary
@@ -48,7 +56,3 @@ Every section above `Additional Details` should be as brief as possible: a revie
 - Follow-Up: "No follow-up work needs to be completed after merging". Low-impact and low-risk changes don't need follow-ups
 
 In `Follow-Up`, say who should do each item: Steven, whoever merges the PR, or the agent. Use checkboxes when they help
-
-## Updating an Existing Body
-
-When updating a pull request body, keep the existing structure and rewrite it to cover all of the changes in the pull request, not just the most recent commits
