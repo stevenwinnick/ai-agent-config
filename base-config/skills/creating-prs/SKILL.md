@@ -13,11 +13,11 @@ git push -u origin HEAD
 
 2. Create the PR
 
-- Use the `generating-pr-body` skill to format the pull request body
+- Use the `generating-pr-body` skill to format the pull request title and body
 
 ```bash
 gh pr create \
-  --title "<Short Descriptive Title Capitalized with Title Case>" \
+  --title "<title generated with the generating-pr-body skill>" \
   --body "<body generated with the generating-pr-body skill>"
 ```
 
