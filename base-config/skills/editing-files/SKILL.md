@@ -36,7 +36,7 @@ git fetch origin
 git switch -c "steven/<short-kebab-case-name>" "origin/<default-branch>"
 ```
 
-Detect the default branch rather than assuming its name (e.g. `git symbolic-ref --short refs/remotes/origin/HEAD`). If the working tree has uncommitted changes that aren't yours, stop and ask the user before switching branches.
+Detect the default branch rather than assuming its name (e.g. `git symbolic-ref --short refs/remotes/origin/HEAD`). If the working tree has any uncommitted changes, including leftovers from an earlier task, stop and ask the user before switching branches.
 
 ## Step 3: Evaluate Task Complexity
 
