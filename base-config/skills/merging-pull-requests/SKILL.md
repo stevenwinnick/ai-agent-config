@@ -5,14 +5,12 @@ description: Merges a pull request. Use when the user wants to merge a PR.
 
 # Merge Pull Request
 
-Use the `shw git pr merge` command to merge the pull request by default:
+Squash-merge the pull request and delete its branch by default:
 
 ```bash
-shw git pr merge
+gh pr merge --squash --delete-branch
 ```
 
-Run it from the branch's worktree to merge that branch's PR, or pass a branch name explicitly (`shw git pr merge <branch>`). The command squash-merges the PR, deletes the remote branch, and removes the local worktree and branch.
+Run it from the repo with the PR's branch checked out, or pass the branch, PR number, or URL explicitly (`gh pr merge <branch> --squash --delete-branch`). `gh` deletes the remote and local branches and switches the checkout to the updated default branch.
 
-Because the command removes the current worktree, run any post-merge steps from the default branch's worktree. Apply any post-merge steps for the repo, such as pulling the default branch and re-running validation.
-
-If `shw` is missing or the command fails, use the `debugging-shw-cli` skill.
+Then apply any post-merge steps for the repo, such as re-running validation.

@@ -1,5 +1,5 @@
 #!/bin/bash
-# Clone a GitHub repo into the preferred worktree directory structure
+# Clone a GitHub repo into $CODE_ROOT/<repo-name>
 # Usage: clone-repo.sh <owner/repo or GitHub URL>
 
 set -e
@@ -26,31 +26,14 @@ if [[ -z "$REPO_NAME" ]]; then
     exit 1
 fi
 
-TARGET_BASE="$CODE_ROOT/$REPO_NAME"
+TARGET_PATH="$CODE_ROOT/$REPO_NAME"
 
-if [[ -d "$TARGET_BASE" ]]; then
-    echo "Error: Directory already exists: $TARGET_BASE"
+if [[ -d "$TARGET_PATH" ]]; then
+    echo "Error: Directory already exists: $TARGET_PATH"
     exit 1
 fi
 
-# Clone into a temporary location to detect the default branch
-TEMP_PATH="$TARGET_BASE/.clone-tmp"
-mkdir -p "$TARGET_BASE"
-gh repo clone "$REPO_ID" "$TEMP_PATH"
-
-# Detect the default branch
-DEFAULT_BRANCH=$(git -C "$TEMP_PATH" symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@')
-if [[ -z "$DEFAULT_BRANCH" ]]; then
-    DEFAULT_BRANCH=$(git -C "$TEMP_PATH" rev-parse --abbrev-ref HEAD)
-fi
-
-# Move clone to final location named after the default branch
-TARGET_PATH="$TARGET_BASE/$DEFAULT_BRANCH/$REPO_NAME"
-mkdir -p "$TARGET_BASE/$DEFAULT_BRANCH"
-mv "$TEMP_PATH" "$TARGET_PATH"
-
-# Create empty worktrees directory
-mkdir -p "$TARGET_BASE/worktrees"
+gh repo clone "$REPO_ID" "$TARGET_PATH"
 
 echo ""
 echo "Clone complete"

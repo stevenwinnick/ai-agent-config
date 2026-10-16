@@ -22,9 +22,9 @@ Each individual setting within that block must be wrapped with its own BEGIN/END
 ```bash
 # BEGIN: Steven's Custom Setup
 
-# BEGIN: Setting CODE_ROOT to enable preferred agent worktree structure
+# BEGIN: Setting CODE_ROOT as the root directory for all repos
 export CODE_ROOT="$HOME"
-# END: Setting CODE_ROOT to enable preferred agent worktree structure
+# END: Setting CODE_ROOT as the root directory for all repos
 
 # END: Steven's Custom Setup
 ```

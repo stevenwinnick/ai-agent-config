@@ -12,6 +12,6 @@ if [ -e "$AI_AGENT_CONFIG_HOME" ] && [ ! -L "$AI_AGENT_CONFIG_HOME" ]; then
   exit 1
 fi
 
-# Keep a stable path so generated symlinks don't point at transient worktrees.
+# Keep a stable path so generated symlinks don't depend on where the repo is checked out.
 rm -f "$AI_AGENT_CONFIG_HOME"
 ln -s "$REPO_DIR" "$AI_AGENT_CONFIG_HOME"

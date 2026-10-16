@@ -1,13 +1,13 @@
 ---
 name: cloning-repos
-description: Clones a GitHub repo into the preferred worktree directory structure. Use when the user wants to clone a new repository.
+description: Clones a GitHub repo into `$CODE_ROOT`. Use when the user wants to clone a new repository.
 argument-hint: "<owner/repo or GitHub URL>"
 disable-model-invocation: true
 ---
 
 # Clone Repo
 
-Clones a GitHub repo directly into the preferred worktree directory structure.
+Clones a GitHub repo into `$CODE_ROOT/<repo-name>/`.
 
 ## Usage
 
@@ -24,8 +24,7 @@ Based on $ARGUMENTS, run the script:
 ### What It Does
 
 1. Parses the repo identifier to determine the repo name
-2. Clones the repo into `$CODE_ROOT/<repo-name>/<default-branch-name>/<repo-name>/`
-3. Creates the empty `worktrees/` directory
+2. Clones the repo into `$CODE_ROOT/<repo-name>/`
 
 ### Result
 

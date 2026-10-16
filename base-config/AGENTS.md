@@ -33,7 +33,7 @@ Additionally, if you identify improvements that could be made to your configurat
 
 ### File Editing Tasks
 
-**IMPORTANT**: You MUST invoke the `editing-files` skill for ALL tasks that involve modifying files. This includes code, configuration, documentation, scripts, and any other file changes. Do NOT start editing files directly - always invoke `editing-files` first, as it orchestrates critical workflow steps (worktree setup, planning, implementation, PR creation, and review) that would otherwise be skipped
+**IMPORTANT**: You MUST invoke the `editing-files` skill for ALL tasks that involve modifying files. This includes code, configuration, documentation, scripts, and any other file changes. Do NOT start editing files directly - always invoke `editing-files` first, as it orchestrates critical workflow steps (branch setup, planning, implementation, PR creation, and review) that would otherwise be skipped
 
 ### Skill Loading
 

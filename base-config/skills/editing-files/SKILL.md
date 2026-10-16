@@ -1,6 +1,6 @@
 ---
 name: editing-files
-description: Completes tasks that involve editing files, orchestrating the full workflow from worktree setup through PR creation. Use when the user describes a feature, bug fix, configuration change, or any task requiring file modifications.
+description: Completes tasks that involve editing files, orchestrating the full workflow from branch setup through PR creation. Use when the user describes a feature, bug fix, configuration change, or any task requiring file modifications.
 argument-hint: [description]
 ---
 
@@ -13,7 +13,7 @@ Copy this checklist and track progress:
 ```
 Task Progress:
 - [ ] Step 1: Parse the request
-- [ ] Step 2: Setup worktree and branch
+- [ ] Step 2: Set up branch
 - [ ] Step 3: Evaluate task complexity
 - [ ] Step 4: Create a plan (if needed)
 - [ ] Step 5: Implement
@@ -27,9 +27,16 @@ Task Progress:
 
 Analyze the user's input: ($ARGUMENTS)
 
-## Step 2: Setup Worktree and Branch
+## Step 2: Set Up Branch
 
-Use the `managing-worktrees` skill to understand the local repo's worktree structure. If the user specified a branch or worktree to use, use it. Otherwise, create a new worktree with the appropriate branch.
+Repos are plain clones at `$CODE_ROOT/<repo-name>/`. If the user specified a branch to use, switch to it. Otherwise, create a new branch named `steven/<short-kebab-case-name>` from the latest default branch:
+
+```bash
+git fetch origin
+git switch -c "steven/<short-kebab-case-name>" "origin/<default-branch>"
+```
+
+Detect the default branch rather than assuming its name (e.g. `git symbolic-ref --short refs/remotes/origin/HEAD`). If the working tree has uncommitted changes that aren't yours, stop and ask the user before switching branches.
 
 ## Step 3: Evaluate Task Complexity
 
