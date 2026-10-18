@@ -11,11 +11,10 @@ This does not apply to repos cloned from others that don't already use these too
 
 ## Creating or Cloning the Project
 
-Set the project up in my preferred worktree layout using the `shw` CLI, via the relevant skill:
+Set the project up as a plain clone at `$CODE_ROOT/<repo-name>/`, via the relevant skill:
 
-- New project: use the `initializing-repos` skill, which wraps `shw git repo create`
-- Existing project I'm onboarding to: use the `cloning-repos` skill, which clones into the same layout
-- Additional branches: use the `managing-worktrees` skill, which wraps `shw git worktree`
+- New project: use the `initializing-repos` skill
+- Existing project I'm onboarding to: use the `cloning-repos` skill
 
 ## Standard Tools by Language
 

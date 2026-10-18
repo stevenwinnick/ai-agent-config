@@ -78,23 +78,22 @@ These scripts run each agent (Claude Code, Codex CLI) in headless mode with prob
 
 #### Branch Validation Workflow
 
-Before presenting a PR to the user, apply and test from the branch worktree:
+Before presenting a PR to the user, apply and test with the branch checked out:
 
 ```bash
-<branch-worktree>/scripts/update-and-test-configs.sh
+./scripts/update-and-test-configs.sh
 ```
 
-This repoints `~/.ai-agent-config` to the branch worktree and runs all validation. Tell the user to let you know when they merge so you can apply the post-merge steps.
+This applies the branch's config to all agents and runs all validation. Tell the user to let you know when they merge so you can apply the post-merge steps.
 
-After the user merges, pull the default branch and re-apply and re-test:
+After the user merges, switch back to the default branch, then pull, re-apply, and re-test:
 
 ```bash
-# From the trunk worktree, after pulling
 ./scripts/apply-updated-trunk-config.sh
 ./scripts/test-configs.sh
 ```
 
-`apply-updated-trunk-config.sh` resolves the default-branch worktree from git metadata, so it still restores trunk even if `~/.ai-agent-config` currently points at a branch worktree.
+`apply-updated-trunk-config.sh` refuses to run unless the default branch is checked out, so a branch's config is never pulled over by mistake.
 
 ### Style
 
@@ -107,7 +106,7 @@ After the user merges, pull the default branch and re-apply and re-test:
 
 ### Config Home Symlink
 
-All configure scripts call `scripts/configure-ai-agent-config-home.sh`, which repoints `~/.ai-agent-config` to the repo checkout where the script is run. This keeps downstream symlinks stable (for example `~/.codex/skills/*`) while still allowing branch worktree testing.
+All configure scripts call `scripts/configure-ai-agent-config-home.sh`, which repoints `~/.ai-agent-config` to the repo checkout where the script is run. This keeps downstream symlinks stable (for example `~/.codex/skills/*`) regardless of where the repo is checked out.
 
 ### Configuration Scripts
 

@@ -1,12 +1,12 @@
 ---
 name: initializing-repos
-description: Initializes a new local git repo in the preferred worktree directory structure and creates its GitHub remote. Use when the user wants to create a new project.
+description: Initializes a new local git repo in `$CODE_ROOT` and creates its GitHub remote. Use when the user wants to create a new project.
 argument-hint: "<repo-name> [--description <description>] [--public]"
 ---
 
 # Initialize Repo
 
-Creates a new git repo in the preferred worktree directory structure and pushes it to GitHub.
+Creates a new git repo at `$CODE_ROOT/<repo-name>/` and pushes it to GitHub.
 
 ## Usage
 
@@ -24,7 +24,7 @@ Based on $ARGUMENTS, run the script:
 
 ### What It Does
 
-1. Creates the directory structure at `$CODE_ROOT/<repo-name>/trunk/<repo-name>/`
+1. Creates the directory `$CODE_ROOT/<repo-name>/`
 2. Initializes a git repo with `trunk` as the default branch
 3. Creates a `.gitignore` file
 4. Makes an initial commit

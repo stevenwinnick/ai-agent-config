@@ -1,5 +1,5 @@
 #!/bin/bash
-# Initialize a new repo in the preferred worktree directory structure and create its GitHub remote
+# Initialize a new repo at $CODE_ROOT/<repo-name> and create its GitHub remote
 # Usage: init-repo.sh <repo-name> [--description <description>] [--public]
 
 set -e
@@ -57,7 +57,7 @@ if [[ -z "$CODE_ROOT" ]]; then
     exit 1
 fi
 
-REPO_PATH="$CODE_ROOT/$REPO_NAME/trunk/$REPO_NAME"
+REPO_PATH="$CODE_ROOT/$REPO_NAME"
 
 if [[ -d "$REPO_PATH" ]]; then
     echo "Error: Directory already exists: $REPO_PATH"
@@ -71,10 +71,7 @@ if [[ -z "$GH_USER" ]]; then
     exit 1
 fi
 
-# Create directory structure
 mkdir -p "$REPO_PATH"
-# Create empty worktrees directory alongside trunk
-mkdir -p "$CODE_ROOT/$REPO_NAME/worktrees"
 
 # Initialize git repo with trunk as default branch
 git init -b trunk "$REPO_PATH"
