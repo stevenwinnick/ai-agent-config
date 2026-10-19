@@ -13,6 +13,12 @@ Find the requested upcoming event in the connected calendar, using Steven's time
 
 Use attendee email addresses, affiliations, and the invitation context to distinguish people with similar names. For group meetings, cover the participants relevant to the likely objectives and clearly attribute each person's background and interactions
 
+## Find a Photo
+
+As part of the online research, search for a photo of the person, preferably on their official institutional, company, lab, or personal profile. Confirm that the source identifies the same person using their name, affiliation, and meeting context; do not rely on visual resemblance or a matching name alone
+
+If a suitable photo is found and can be displayed, embed it before `## Pre-Meeting Notes`, with the person's name as alt text and a concise source link. Use an actual image URL returned by the research tools and a supported image display method. If no suitable image is found, identity is uncertain, or the image cannot be displayed, omit it and begin directly with the notes. Do not generate a substitute, insert a placeholder, or download a remote image to bypass display restrictions
+
 ## Research and Synthesize
 
 ### Likely Objectives
@@ -57,7 +63,9 @@ The following is the required final briefing format, not an illustrative outline
 
 Use a numbered list for objectives. Under Mutual Context and Individual Context, put each descriptive context label on its own line and follow it with hyphen bullets. Under Meeting Notes, put each agenda topic on its own line and follow it with hyphen bullets containing points or questions. Repeat context labels and agenda topics as needed. A brief Mutual Context section may use a short paragraph without bullets; Individual Context and Meeting Notes must use bullets
 
-Replace only the angle-bracket placeholders in the template with actual content. Do not rename the fixed headings, replace the sections with prose or tables, or substitute an alternative briefing format. Keep citations and any source limitations within the relevant sections. Even when context is unavailable, retain its heading and state the limitation there
+Replace only the angle-bracket placeholders in the template with actual content. Do not rename the fixed headings, replace the sections with prose or tables, or substitute an alternative briefing format. Keep citations and any source limitations within the relevant sections, apart from the photo source link above the notes. Even when context is unavailable, retain its heading and state the limitation there
+
+When a usable photo is found, prepend its image embed and source link to the template below. The photo is the only optional content before the notes; it does not change any of the required headings or lists
 
 Return the completed Markdown as the briefing itself, rather than wrapping it in a code fence. The fence below only marks the template in these instructions
 
@@ -87,6 +95,6 @@ Return the completed Markdown as the briefing itself, rather than wrapping it in
 - <Point to raise, question to ask, or decision to seek>
 ```
 
-Before delivering, compare the actual briefing against the template: all five fixed headings must be present in order, objectives must be numbered, and context and agenda content must follow the label-and-bullets structure above. Correct any mismatch before responding
+Before delivering, compare the actual briefing against the template: all five fixed headings must be present in order, objectives must be numbered, and context and agenda content must follow the label-and-bullets structure above. If included, the photo and its source must precede `## Pre-Meeting Notes`. Correct any mismatch before responding
 
-Begin with `## Pre-Meeting Notes` and do not add a preamble or extra summary sections. Keep the briefing easy to scan while providing enough explanation to make unfamiliar scientific work understandable. Return it in chat unless Steven requests another destination; the same structure applies in that destination. Creating a briefing does not itself authorize changing calendar events, sending messages, or publishing notes elsewhere
+Begin with the photo and source link when available, followed by `## Pre-Meeting Notes`; otherwise begin with `## Pre-Meeting Notes`. Do not add a preamble or extra summary sections. Keep the briefing easy to scan while providing enough explanation to make unfamiliar scientific work understandable. Return it in chat unless Steven requests another destination; the same structure applies in that destination. Creating a briefing does not itself authorize changing calendar events, sending messages, or publishing notes elsewhere
