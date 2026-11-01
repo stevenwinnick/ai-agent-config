@@ -25,7 +25,7 @@ Combine records for the same commitment. Check later correspondence, discussions
 
 ## Draft Needed Emails
 
-Consider every call Steven had that day and older loose threads needing an email. Draft a useful follow-up when none has been sent; a specific thank-you or recap can suffice without an explicit action item. Skip inappropriate or redundant email, such as routine internal syncs handled elsewhere
+Consider every meeting Steven had that day, including in-person meetings, and older loose threads needing an email. Draft a useful follow-up when none has been sent; a specific thank-you or recap can suffice without an explicit action item. Skip inappropriate or redundant email, such as routine internal syncs handled elsewhere
 
 **Organizing-lead rule:** For meetings with multiple Cascadium participants, draft only if Steven led organizing the meeting. Verify this from scheduling correspondence and meeting context, not attendance or an assigned action. The calendar organizer is evidence, not proof. If someone else led organizing, skip; if unclear, flag it without drafting. Apply the same rule to revisions and meeting-derived loose threads
 
