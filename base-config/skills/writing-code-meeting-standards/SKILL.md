@@ -23,37 +23,30 @@ Always write tests for new code when feasible. Tests should test actual desired 
 
 Avoid duplicating logic or data. Centralize definitions and reference them where needed.
 
-Represent each concept one way everywhere. Reuse an existing type instead of adding a near-copy, share one shape between features that express the same thing, and when a representation changes, change it everywhere it appears.
+Following the DRY Principle, represent each concept one way everywhere when sensible (ex. share features between types instead of adding near-copy types)
 
 ## Prefer Standards
 
-Prefer an industry-standard library, format, or protocol over writing your own, e.g. the JSON Schema `date-time` format over a custom date pattern
+Prefer an industry-standard library, format, or protocol over writing your own
 
 ## Naming
 
-- Name new concepts after the industry-standard term, even when the request suggests another name
+- Name new concepts after the industry-standard term, even when the request suggests another name. Tell the requestor when and why you've done something different than they requested.
 - Name a thing for what it holds, not for how it's shown or delivered, e.g. `ProductSearchResults` rather than `ProductPage`
 - Qualify a name when a sibling could be confused with it, e.g. `stockAlerts` next to `arrivalAlerts` rather than `alerts`
-- When you rename a concept, rename it everywhere it appears (types, fields, functions, files, components, tests, and user-facing text), then make the same pattern consistent elsewhere
+- When you rename a concept, rename it everywhere it appears, then make the same pattern consistent elsewhere
 
 ## Data Modeling
 
-- When which fields apply depends on a kind, model one variant per kind (a discriminated union) rather than one object with every field optional
-- Compose a type by extending a smaller one, e.g. a record that adds an `id` to its input type. Remove fields (`Omit`) only when taking fields away is what you mean
-- Build a view of a record by picking the fields it shows unchanged, so each field is defined once and the view only gains the fields it names. Give a field its own type where the view's means something different
+- When which fields apply depends on a kind, model one variant per kind (a discriminated union) when possible rather than one object with every field optional
+- Compose objects and types primarily by extending a smaller one, e.g. a record that adds an `id` to its input type. Remove fields only when taking fields away is more clear semantically
 - Key values by name, not by position in an array, so reordering or extending the array can't silently change what they mean
-- Compare dates and times by the moment they represent, not as text, since one instant can be written several ways
-- Record a value that changes over time, like a price, as a history of effective-dated entries, so past and announced future values stay known
-- Keep planned data apart from recorded data, so changing a plan updates only what that plan created
 
 ## Documentation
 
-- Don't list in documentation what the code already lists, such as a type's members or the supported values. Point to the file that defines them, since a copied list goes stale
-- Put guidance about using a definition in a comment next to that definition, not in a README
-- Write steps as instructions ("Define the schema"), not as descriptions of what happens
-- Describe what the code does exactly, e.g. "in the order they were added" rather than "in preference order" when nothing ranks them
+- Don't list in documentation what the code already lists, such as a type's members or the supported values
 - When a name doesn't say what something is for, its description does
-- Use January 1, 2000 in date examples
+- Use January 1, or January 1, 2000, in internal date examples. Use January 1 of the upcoming year in public-facing examples.
 
 ## Prefer Determinism
 
