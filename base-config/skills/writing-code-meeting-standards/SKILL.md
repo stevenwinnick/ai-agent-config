@@ -23,6 +23,37 @@ Always write tests for new code when feasible. Tests should test actual desired 
 
 Avoid duplicating logic or data. Centralize definitions and reference them where needed.
 
+Represent each concept one way everywhere. Reuse an existing type instead of adding a near-copy, share one shape between features that express the same thing, and when a representation changes, change it everywhere it appears.
+
+## Prefer Standards
+
+Prefer an industry-standard library, format, or protocol over writing your own, e.g. the JSON Schema `date-time` format over a custom date pattern
+
+## Naming
+
+- Name new concepts after the industry-standard term, even when the request suggests another name
+- Name a thing for what it holds, not for how it's shown or delivered, e.g. `ProductSearchResults` rather than `ProductPage`
+- Qualify a name when a sibling could be confused with it, e.g. `stockAlerts` next to `arrivalAlerts` rather than `alerts`
+- When you rename a concept, rename it everywhere it appears (types, fields, functions, files, components, tests, and user-facing text), then make the same pattern consistent elsewhere
+
+## Data Modeling
+
+- When which fields apply depends on a kind, model one variant per kind (a discriminated union) rather than one object with every field optional
+- Compose a type by extending a smaller one, e.g. a record that adds an `id` to its input type. Remove fields (`Omit`) only when taking fields away is what you mean
+- Key values by name, not by position in an array, so reordering or extending the array can't silently change what they mean
+- Compare dates and times by the moment they represent, not as text, since one instant can be written several ways
+- Record a value that changes over time, like a price, as a history of effective-dated entries, so past and announced future values stay known
+- Keep planned data apart from recorded data, so changing a plan updates only what that plan created
+
+## Documentation
+
+- Don't list in documentation what the code already lists, such as a type's members or the supported values. Point to the file that defines them, since a copied list goes stale
+- Put guidance about using a definition in a comment next to that definition, not in a README
+- Write steps as instructions ("Define the schema"), not as descriptions of what happens
+- Describe what the code does exactly, e.g. "in the order they were added" rather than "in preference order" when nothing ranks them
+- When a name doesn't say what something is for, its description does
+- Use January 1, 2000 in date examples
+
 ## Prefer Determinism
 
 Prefer more deterministic code (ex. traditional programmatic scripts) over nondeterministic code (ex. AI prompting) when possible
