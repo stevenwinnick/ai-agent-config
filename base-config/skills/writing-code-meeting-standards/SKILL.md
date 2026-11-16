@@ -40,6 +40,7 @@ Prefer an industry-standard library, format, or protocol over writing your own, 
 
 - When which fields apply depends on a kind, model one variant per kind (a discriminated union) rather than one object with every field optional
 - Compose a type by extending a smaller one, e.g. a record that adds an `id` to its input type. Remove fields (`Omit`) only when taking fields away is what you mean
+- Build a view of a record by picking the fields it shows unchanged, so each field is defined once and the view only gains the fields it names. Give a field its own type where the view's means something different
 - Key values by name, not by position in an array, so reordering or extending the array can't silently change what they mean
 - Compare dates and times by the moment they represent, not as text, since one instant can be written several ways
 - Record a value that changes over time, like a price, as a history of effective-dated entries, so past and announced future values stay known
